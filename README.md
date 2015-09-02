@@ -1,2 +1,5 @@
-# MobileComp397_Assignment1
-Assignment 1 of EECS 397
+# Mobile Computing Assignment 1
+Assignment 1 of EECS 397, due 9/14/2015 @ noon
+
+Harry Nelken
+Kaan Atesoglu
