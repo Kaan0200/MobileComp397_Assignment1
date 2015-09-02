@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License along with
 */
 package com.example.haotian.haotianalp;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,8 +43,25 @@ public class PatternGenerator
     public List<Point> getPattern()
     {
         List<Point> pattern = new ArrayList<Point>();
-        //.....
-        //.....
+
+        //create nodes and add them to list of possibilities
+        List<Point> availablePoints = new ArrayList<>();
+        for (int i = 0; i < 2; i++){
+            for (int ii = 0; i < 2; i++){
+                availablePoints.add(new Point(i, ii));
+            }
+        }
+
+        /* gets a random number within the available list range, then adds that point to
+        /the pattern list, then removes that from the available points */
+        int newPick = mRng.nextInt(availablePoints.size());
+        Log.i("addedPoint", availablePoints.get(newPick).toString());
+        pattern.add(availablePoints.get(newPick));
+        availablePoints.remove(newPick);
+
+        /*TODO: change the list of points to those that are available to those that are able to go
+        //to next */
+
         return pattern;
     }
 
