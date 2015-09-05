@@ -43,24 +43,42 @@ public class PatternGenerator
     public List<Point> getPattern()
     {
         List<Point> pattern = new ArrayList<Point>();
+        for(int passwordIndex = 0; passwordIndex < 4; passwordIndex++ ) {
 
-        //create nodes and add them to list of possibilities
-        List<Point> availablePoints = new ArrayList<>();
-        for (int i = 0; i < 2; i++){
-            for (int ii = 0; i < 2; i++){
-                availablePoints.add(new Point(i, ii));
+            //create nodes and add them to list of possibilities
+            List<Point> availablePoints = new ArrayList<>();
+            for (int i = 0; i < 2; i++){
+                for (int ii = 0; i < 2; i++){
+                    availablePoints.add(new Point(i, ii));
+                }
+            }
+
+            //remove the points that are already within the pattern
+            availablePoints.removeAll(pattern);
+
+            /* gets a random number within the available list range, then adds that point to
+            /the pattern list, then removes that from the available points */
+            int newPick = mRng.nextInt(availablePoints.size());
+            Log.i("addedPoint", availablePoints.get(newPick).toString());
+            pattern.add(availablePoints.get(newPick));
+            availablePoints.remove(newPick);
+
+            // the last point
+            Point lastPoint = availablePoints.get(availablePoints.size() - 1);
+            // use the last point to clean the available Points
+            for (int i = 0; i < availablePoints.size(); i++) {
+                // 2 away, left or right
+                if (Math.abs(lastPoint.x - availablePoints.get(i).x) == 2) {
+                    availablePoints.remove(i);
+                    i--; // keep index same since this is a list
+                }
+                // 2 away, up or down
+                else if (Math.abs(lastPoint.y - availablePoints.get(i).y) == 2) {
+                    availablePoints.remove(i);
+                    i--; // keep index same since this is a list
+                }
             }
         }
-
-        /* gets a random number within the available list range, then adds that point to
-        /the pattern list, then removes that from the available points */
-        int newPick = mRng.nextInt(availablePoints.size());
-        Log.i("addedPoint", availablePoints.get(newPick).toString());
-        pattern.add(availablePoints.get(newPick));
-        availablePoints.remove(newPick);
-
-        /*TODO: change the list of points to those that are available to those that are able to go
-        //to next */
 
         return pattern;
     }
