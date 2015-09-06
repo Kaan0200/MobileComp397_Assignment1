@@ -78,7 +78,17 @@ public class ALPActivity extends Activity {
 
         setContentView(R.layout.activity_alp);
         mPatternView = (LockPatternView) findViewById(R.id.pattern_view);
+        // button hookup and action
         mGenerateButton = (Button) findViewById(R.id.generate_button);
+        mGenerateButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("click","'Randomly Generate Pattern' button was pressed.");
+                        //TODO: do stuff.
+                    }
+                }
+        );
 
         mPracticeToggle = (ToggleButton) findViewById(R.id.practice_toggle);
 
@@ -235,5 +245,4 @@ public class ALPActivity extends Activity {
         mTactileFeedback = enabled;
         mPatternView.setTactileFeedbackEnabled(enabled);
     }
-
 }
