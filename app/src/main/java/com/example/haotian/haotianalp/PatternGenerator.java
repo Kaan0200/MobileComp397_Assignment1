@@ -47,8 +47,8 @@ public class PatternGenerator
 
             //create nodes and add them to list of possibilities
             List<Point> availablePoints = new ArrayList<>();
-            for (int i = 0; i < 2; i++){
-                for (int ii = 0; i < 2; i++){
+            for (int i = 0; i < 3; i++){
+                for (int ii = 0; ii < 3; ii++){
                     availablePoints.add(new Point(i, ii));
                 }
             }

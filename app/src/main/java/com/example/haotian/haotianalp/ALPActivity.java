@@ -85,7 +85,7 @@ public class ALPActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         Log.i("click","'Randomly Generate Pattern' button was pressed.");
-                        //TODO: do stuff.
+                        mGenerator.getPattern();
                     }
                 }
         );
