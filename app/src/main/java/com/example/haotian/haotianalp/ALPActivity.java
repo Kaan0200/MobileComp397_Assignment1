@@ -98,7 +98,7 @@ public class ALPActivity extends Activity {
                     public void onCheckedChanged(CompoundButton buttonView,
                                                  boolean isChecked) {
 
-
+                            mGenerateButton.setEnabled(!isChecked);
                     }
                 });
 
