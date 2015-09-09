@@ -56,28 +56,46 @@ public class PatternGenerator
             //remove the points that are already within the pattern
             availablePoints.removeAll(pattern);
 
+            // If there is a single point in the pattern
+            if (pattern.size() > 0) {
+                Point lastPoint = pattern.get(pattern.size() - 1);
+                // use the last point to clean the available Points
+                for (int i = 0; i < availablePoints.size(); i++) {
+                    // 2 away, left or right
+                    if (Math.abs(lastPoint.x - availablePoints.get(i).x) == 2 ) {
+                        // Get point between last point and point 2 away
+                        Point between = new Point(
+                                Math.abs(availablePoints.get(i).x - 1),
+                                availablePoints.get(i).y);
+
+                        // If point in between is not in pattern, 2 away is not available
+                        if (!pattern.contains(between)) {
+                            availablePoints.remove(i);
+                            i--; // keep index same since this is a list
+                        }
+                    }
+                    // 2 away, up or down
+                    else if (Math.abs(lastPoint.y - availablePoints.get(i).y) == 2) {
+                        // Get point between last point and point 2 away
+                        Point between = new Point(
+                                availablePoints.get(i).x,
+                                Math.abs(availablePoints.get(i).y - 1));
+
+                        // If point in between is not in pattern, 2 away is not available
+                        if (!pattern.contains(between)) {
+                            availablePoints.remove(i);
+                            i--; // keep index same since this is a list
+                        }
+                    }
+                }
+            }
+
             /* gets a random number within the available list range, then adds that point to
             /the pattern list, then removes that from the available points */
             int newPick = mRng.nextInt(availablePoints.size());
             Log.i("addedPoint", availablePoints.get(newPick).toString());
             pattern.add(availablePoints.get(newPick));
             availablePoints.remove(newPick);
-
-            // the last point
-            Point lastPoint = availablePoints.get(availablePoints.size() - 1);
-            // use the last point to clean the available Points
-            for (int i = 0; i < availablePoints.size(); i++) {
-                // 2 away, left or right
-                if (Math.abs(lastPoint.x - availablePoints.get(i).x) == 2) {
-                    availablePoints.remove(i);
-                    i--; // keep index same since this is a list
-                }
-                // 2 away, up or down
-                else if (Math.abs(lastPoint.y - availablePoints.get(i).y) == 2) {
-                    availablePoints.remove(i);
-                    i--; // keep index same since this is a list
-                }
-            }
         }
 
         return pattern;

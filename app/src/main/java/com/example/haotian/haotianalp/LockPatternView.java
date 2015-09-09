@@ -81,7 +81,7 @@ public class LockPatternView extends View
         mLengthNodes = DEFAULT_LENGTH_NODES;
         mNodeDrawables = new NodeDrawable[0][0];
         mCurrentPattern = Collections.emptyList();
-        mHighlightMode = new NoHighlight();                //      ?????
+        mHighlightMode = new FirstHighlight();                //      ?????
         mTouchPoint = new Point(-1, -1);
         mTouchCell = new Point(-1, -1);
         mDrawTouchExtension = false;                    //      ?????
