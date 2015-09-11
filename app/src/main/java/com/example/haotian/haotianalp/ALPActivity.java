@@ -108,7 +108,8 @@ public class ALPActivity extends Activity {
                     if (!isChecked){
                         Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
                         mRecordingTouchData = false;
-                        //TODO: do save of data
+                        writeDataToCSV();
+                        //TODO:clear data
                     }
                     else{
                         Log.i("RECORDINGDATA","Toggled to true, recording the data");
@@ -123,7 +124,7 @@ public class ALPActivity extends Activity {
                     public void onCheckedChanged(CompoundButton buttonView,
                                                  boolean isChecked) {
 
-                            mGenerateButton.setEnabled(!isChecked);
+                        mGenerateButton.setEnabled(!isChecked);
                     }
                 });
 
@@ -165,6 +166,72 @@ public class ALPActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void writeDataToCSV()
+    {
+        try {
+            //create the file
+            String FILENAME = "data_file";
+            FileOutputStream output = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            StringBuilder outputString = new StringBuilder();
+            //loop through all the data we want to write for each column
+            // do the header first
+            outputString.append("position_X, position_Y, velocity_X, velocity_Y, pressure, size, \n");
+
+            for(int i = 0; i < xPositionsList.size(); i++){
+                // X Position
+                if (i > xPositionsList.size()-1){
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xPositionsList.get(i) + ", ");
+                }
+                // Y Position
+                if (i > yPositionsList.size()-1){
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yPositionsList.get(i) + ", ");
+                }
+                // X Velocity
+                if (i > xVelocityList.size()-1){
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xVelocityList.get(i) + ", ");
+                }
+                // Y Velocity
+                if (i > yVelocityList.size()-1){
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yVelocityList.get(i) + ", ");
+                }
+                // Pressure
+                if (i > pressureList.size()-1){
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(pressureList.get(i) + ", ");
+                }
+                // Size
+                if (i > sizeList.size()-1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(pressureList.get(i) + ", ");
+                }
+                // line break
+                outputString.append("\n");
+            }
+
+            // do the actual writing to file
+            Log.i("WRITING", "Writing the data to file");
+            output.write(outputString.toString().getBytes());
+            Log.i("CLOSING", "Closing the file that was written to");
+            output.close();
+
+
+        } catch (IOException ex){
+            Log.e("IOEXCEPTION", "There was a problem either finding the file, or writing");
+            Log.e("ERRORMSG",ex.getMessage());
+            Log.e("ERRORSTK",ex.getStackTrace().toString());
+        }
     }
 
     private void updateFromPrefs()
