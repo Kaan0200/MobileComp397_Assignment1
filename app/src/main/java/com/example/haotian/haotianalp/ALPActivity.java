@@ -43,6 +43,7 @@ public class ALPActivity extends Activity {
     protected Button mGenerateButton;
     protected Button mDesigner;
     protected ToggleButton mPracticeToggle;
+    protected ToggleButton mLoggingToggle;
     private List<Point> mEasterEggPattern;
     protected SharedPreferences mPreferences;
     protected int mGridLength=0;
@@ -50,6 +51,7 @@ public class ALPActivity extends Activity {
     protected int mPatternMax=0;
     protected String mHighlightMode;
     protected boolean mTactileFeedback;
+    protected boolean mRecordingTouchData;
 
     private static final String TAG = "SensorActivity";
     private static final String TAGmotion = "motionEvent";
@@ -98,9 +100,24 @@ public class ALPActivity extends Activity {
                 }
         );
 
+        mLoggingToggle = (ToggleButton) findViewById(R.id.logging_toggle);
+        mLoggingToggle.setOnCheckedChangeListener(
+            new ToggleButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if (!isChecked){
+                        Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
+                        mRecordingTouchData = false;
+                        //TODO: do save of data
+                    }
+                    else{
+                        Log.i("RECORDINGDATA","Toggled to true, recording the data");
+                        mRecordingTouchData = true;
+                    }
+                }
+        });
+
         mPracticeToggle = (ToggleButton) findViewById(R.id.practice_toggle);
-
-
         mPracticeToggle.setOnCheckedChangeListener(
                 new ToggleButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView,
@@ -255,46 +272,46 @@ public class ALPActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        switch(event.getAction()) {
-
-            case MotionEvent.ACTION_DOWN:
-                float xPos = event.getX();
-                float yPos = event.getY();
-                float pressure = event.getPressure();
-                float size = event.getSize();
-                xVelocityList.add(0f);
-                yVelocityList.add(0f);
-                xPositionsList.add(xPos);
-                yPositionsList.add(yPos);
-                pressureList.add(pressure);
-                sizeList.add(size);
-                Log.i("DOWN", "Touch started at (" + xPos + ", " + yPos + "), size:"+ size+", pressure:"+pressure);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                xPos = event.getX();
-                yPos = event.getY();
-                //TODO: Velocity
-                pressure = event.getPressure();
-                size = event.getSize();
-                xPositionsList.add(xPos);
-                yPositionsList.add(yPos);
-                pressureList.add(pressure);
-                sizeList.add(size);
-                Log.i("MOVE", "Touch moved at (" + xPos + ", " + yPos + "), size:"+ size+", pressure:"+pressure);
-                break;
-            case MotionEvent.ACTION_UP:
-                xPos = event.getX();
-                yPos = event.getY();
-                //TODO: Velocity
-                pressure = event.getPressure();
-                size = event.getSize();
-                xPositionsList.add(xPos);
-                yPositionsList.add(yPos);
-                pressureList.add(pressure);
-                sizeList.add(size);
-                Log.i("UP", "Touch lifted at (" + xPos + ", " + yPos + "), size:"+ size+", pressure:"+pressure);
-                break;
+        if (mRecordingTouchData) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    float xPos = event.getX();
+                    float yPos = event.getY();
+                    float pressure = event.getPressure();
+                    float size = event.getSize();
+                    xVelocityList.add(0f);
+                    yVelocityList.add(0f);
+                    xPositionsList.add(xPos);
+                    yPositionsList.add(yPos);
+                    pressureList.add(pressure);
+                    sizeList.add(size);
+                    Log.i("DOWN", "Touch started at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    xPos = event.getX();
+                    yPos = event.getY();
+                    //TODO: Velocity
+                    pressure = event.getPressure();
+                    size = event.getSize();
+                    xPositionsList.add(xPos);
+                    yPositionsList.add(yPos);
+                    pressureList.add(pressure);
+                    sizeList.add(size);
+                    Log.i("MOVE", "Touch moved at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    xPos = event.getX();
+                    yPos = event.getY();
+                    //TODO: Velocity
+                    pressure = event.getPressure();
+                    size = event.getSize();
+                    xPositionsList.add(xPos);
+                    yPositionsList.add(yPos);
+                    pressureList.add(pressure);
+                    sizeList.add(size);
+                    Log.i("UP", "Touch lifted at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    break;
+            }
         }
         return false;
     }
