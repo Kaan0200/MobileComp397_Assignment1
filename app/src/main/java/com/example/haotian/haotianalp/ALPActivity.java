@@ -2,12 +2,15 @@ package com.example.haotian.haotianalp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -26,8 +29,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.Buffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -172,8 +177,15 @@ public class ALPActivity extends Activity {
     {
         try {
             //create the file
-            String FILENAME = "data_file";
-            FileOutputStream output = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            String filename = "assignment1datadump.csv";
+            File file = new File(Environment.getExternalStorageDirectory(), filename);
+                file.createNewFile();
+
+
+            // Create the writing stream
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
             StringBuilder outputString = new StringBuilder();
             //loop through all the data we want to write for each column
             // do the header first
@@ -222,10 +234,19 @@ public class ALPActivity extends Activity {
 
             // do the actual writing to file
             Log.i("WRITING", "Writing the data to file");
-            output.write(outputString.toString().getBytes());
-            Log.i("CLOSING", "Closing the file that was written to");
-            output.close();
+            bw.write(outputString.toString());
+           // Log.i("CLOSING", "Closing the file that was written at " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + " /" + filename);
+            bw.close();
 
+            // scan the new media so the device knows it's there and it can be accessed
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener(){
+                        public void onScanCompleted(String path, Uri uri){
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
 
         } catch (IOException ex){
             Log.e("IOEXCEPTION", "There was a problem either finding the file, or writing");
