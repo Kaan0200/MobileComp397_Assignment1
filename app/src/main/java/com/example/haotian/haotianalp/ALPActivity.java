@@ -42,13 +42,12 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ALPActivity extends Activity {
+public class ALPActivity extends Activity implements SensorEventListener {
     protected LockPatternView mPatternView;
     protected PatternGenerator mGenerator;
     protected Button mGenerateButton;
     protected Button mDesigner;
     protected ToggleButton mPracticeToggle;
-    protected ToggleButton mLoggingToggle;
     private List<Point> mEasterEggPattern;
     protected SharedPreferences mPreferences;
     protected int mGridLength=0;
@@ -63,7 +62,7 @@ public class ALPActivity extends Activity {
     private SensorManager mSensorManager = null;
 
     public List<Sensor> deviceSensors;
-    private  Sensor mAccelerometer, mMagnetometer, mGyroscope, mRotation, mGravity, myLinearAcc;
+    private  Sensor mAccelerometer, mMagnetometer, mGyroscope, mRotation, mGravity, mLinearAcc;
 
     private File file;
     public static String[] mLine;
@@ -76,6 +75,27 @@ public class ALPActivity extends Activity {
     private String myStr = "";
 
     // these are lists used to save the touch information
+    // ------- Part 3
+    public List<String> timeStampList = new ArrayList<>();
+    public List<Float> xAccelerometerList = new ArrayList<>();
+    public List<Float> yAccelerometerList = new ArrayList<>();
+    public List<Float> zAccelerometerList = new ArrayList<>();
+    public List<Float> xMagneticList = new ArrayList<>();
+    public List<Float> yMagneticList = new ArrayList<>();
+    public List<Float> zMagneticList = new ArrayList<>();
+    public List<Float> xGyroscopeList = new ArrayList<>();
+    public List<Float> yGyroscopeList = new ArrayList<>();
+    public List<Float> zGyroscopeList = new ArrayList<>();
+    public List<Float> xRotationList = new ArrayList<>();
+    public List<Float> yRotationList = new ArrayList<>();
+    public List<Float> zRotationList = new ArrayList<>();
+    public List<Float> xLinearAccelList = new ArrayList<>();
+    public List<Float> yLinearAccelList = new ArrayList<>();
+    public List<Float> zLinearAccelList = new ArrayList<>();
+    public List<Float> xGravityList = new ArrayList<>();
+    public List<Float> yGravityList = new ArrayList<>();
+    public List<Float> zGravityList = new ArrayList<>();
+    // ------- Part 2
     public List<Float> xPositionsList = new ArrayList<>();
     public List<Float> yPositionsList = new ArrayList<>();
     public List<Float> pressureList = new ArrayList<>();
@@ -105,24 +125,6 @@ public class ALPActivity extends Activity {
                 }
         );
 
-        mLoggingToggle = (ToggleButton) findViewById(R.id.logging_toggle);
-        mLoggingToggle.setOnCheckedChangeListener(
-            new ToggleButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (!isChecked){
-                        Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
-                        mRecordingTouchData = false;
-                        writeDataToCSV();
-                        //TODO:clear data
-                    }
-                    else{
-                        Log.i("RECORDINGDATA","Toggled to true, recording the data");
-                        mRecordingTouchData = true;
-                    }
-                }
-        });
-
         mPracticeToggle = (ToggleButton) findViewById(R.id.practice_toggle);
         mPracticeToggle.setOnCheckedChangeListener(
                 new ToggleButton.OnCheckedChangeListener() {
@@ -130,9 +132,28 @@ public class ALPActivity extends Activity {
                                                  boolean isChecked) {
 
                         mGenerateButton.setEnabled(!isChecked);
+                        if (!isChecked){
+                            Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
+                            mRecordingTouchData = false;
+                            writeDataToCSV();
+                            //TODO:clear data
+                        }
+                        else{
+                            Log.i("RECORDINGDATA","Toggled to true, recording the data");
+                            mRecordingTouchData = true;
+                        }
                     }
                 });
 
+        // bind up manager
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // bind up sensors
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        mLinearAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
     }
 
     @Override
@@ -159,6 +180,15 @@ public class ALPActivity extends Activity {
     }
 
     @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy){
+
+    }
+
+    // not being used
+    @Override
+    public final void onSensorChanged(SensorEvent event){ }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -180,7 +210,6 @@ public class ALPActivity extends Activity {
             String filename = "assignment1datadump.csv";
             File file = new File(Environment.getExternalStorageDirectory(), filename);
                 file.createNewFile();
-
 
             // Create the writing stream
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
