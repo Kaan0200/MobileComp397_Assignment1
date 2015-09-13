@@ -121,6 +121,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                     public void onClick(View view) {
                         Log.i("click","'Randomly Generate Pattern' button was pressed.");
                         mPatternView.setPattern(mGenerator.getPattern());
+                        mPatternView.invalidate();
                     }
                 }
         );
