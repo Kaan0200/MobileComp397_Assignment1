@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License along with
 */
 package com.example.haotian.haotianalp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -273,6 +274,7 @@ public class LockPatternView extends View
         {
             return super.onTouchEvent(event);
         }
+        ALPActivity parent = (ALPActivity) getContext();
         switch(event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
@@ -281,6 +283,7 @@ public class LockPatternView extends View
                     resetPractice();
                 }
                 mDrawTouchExtension = true;
+                parent.onTouchEvent(event);
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX(), y = event.getY();
                 mTouchPoint.x = (int) x;
@@ -338,10 +341,12 @@ public class LockPatternView extends View
                     appendPattern(mPracticePattern, newPoint);
                     mPracticePool.add(newPoint);
                 }
+                parent.onTouchEvent(event);
                 break;
             case MotionEvent.ACTION_UP:
                 mDrawTouchExtension = false;
                 testPracticePattern();
+                parent.onTouchEvent(event);
                 break;
             default:
                 return super.onTouchEvent(event);

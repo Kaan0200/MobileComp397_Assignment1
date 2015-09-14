@@ -166,15 +166,13 @@ public class ALPActivity extends Activity implements SensorEventListener {
                         mGenerateButton.setEnabled(!isChecked);
                         if (!isChecked) {
                             Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
-                            mRecordingTouchData = false;
-                            mPatternView.setPracticeMode(false);
                             writeDataToCSV();
+                            mPatternView.setPracticeMode(false);
                             //TODO:clear data
                         }
                         else {
-                            Log.i("RECORDINGDATA","Toggled to true, recording the data");
-                            mRecordingTouchData = true;
                             mPatternView.setPracticeMode(true);
+                            Log.i("RECORDINGDATA","Toggled to true, recording the data");
                         }
                     }
                 });
@@ -442,7 +440,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 }
 
                 // Current pattern string
-                outputString.append(mPatternView.mCurrentPattern.toString() + ", ");
+                outputString.append(mPatternView.mCurrentPattern.toString().replace(',',' ') + ", ");
 
                 // Counter value
                 outputString.append(counter + ", ");
@@ -577,7 +575,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
         mPatternView.setTactileFeedbackEnabled(enabled);
     }
 
-    private void recordEvents(MotionEvent event){
+    private void recordTouchEventsNoVelocity(MotionEvent event){
         float xPos = event.getX();
         float yPos = event.getY();
         float pressure = event.getPressure();
@@ -590,23 +588,42 @@ public class ALPActivity extends Activity implements SensorEventListener {
         sizeBuffer.add(size);
     }
 
+    private void recordTouchEventsWithVelocity(MotionEvent event){
+        float xPos = event.getX();
+        float yPos = event.getY();
+        float pressure = event.getPressure();
+        float size = event.getSize();
+        xVelocityBuffer.add(mVelocityTracker.getXVelocity());
+        yVelocityBuffer.add(mVelocityTracker.getYVelocity());
+        xPositionsBuffer.add(xPos);
+        yPositionsBuffer.add(yPos);
+        pressureBuffer.add(pressure);
+        sizeBuffer.add(size);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mPatternView.onTouchEvent(event);
-        if (mRecordingTouchData) {
+        if (mPatternView.getPracticeMode()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    if (mVelocityTracker == null){
+                        mVelocityTracker = VelocityTracker.obtain();
+                    } else {
+                        mVelocityTracker.clear();
+                    }
                     mRecordingSensorData = true;
-                    recordEvents(event);
+                    recordTouchEventsNoVelocity(event);
                     Log.i("DOWN", "Touch started at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    recordEvents(event);
+                    mVelocityTracker.addMovement(event);
+                    mVelocityTracker.computeCurrentVelocity(1000);
+                    recordTouchEventsWithVelocity(event);
                     Log.i("MOVE", "Touch moved at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_UP:
                     mRecordingSensorData = false;
-                    recordEvents(event);
+                    recordTouchEventsNoVelocity(event);
                     counter++;
                     processPracticeResults();
                     Log.i("UP", "Touch lifted at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
