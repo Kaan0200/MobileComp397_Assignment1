@@ -79,21 +79,21 @@ public class ALPActivity extends Activity implements SensorEventListener {
     // ------- Part 4
     private List<Long> timeStampBuffer = new ArrayList<>();
 
-    private List<Float> xAccelerometerBuffer = new ArrayList<>(),
-            yAccelerometerBuffer = new ArrayList<>(),
-            zAccelerometerBuffer = new ArrayList<>();
-    private List<Float> xMagneticBuffer = new ArrayList<>(),
-            yMagneticBuffer = new ArrayList<>(),
-            zMagneticBuffer = new ArrayList<>();
-    private List<Float> xGyroscopeBuffer = new ArrayList<>(),
-            yGyroscopeBuffer = new ArrayList<>(),
-            zGyroscopeBuffer = new ArrayList<>();
-    private List<Float> xRotationBuffer = new ArrayList<>(),
-            yRotationBuffer = new ArrayList<>(),
-            zRotationBuffer = new ArrayList<>();
-    private List<Float> xLinearAccelBuffer = new ArrayList<>(),
-            yLinearAccelBuffer = new ArrayList<>(),
-            zLinearAccelBuffer = new ArrayList<>();
+    private List<Float> xAccelerometerBuffer = new ArrayList<>();
+    private List<Float> yAccelerometerBuffer = new ArrayList<>();
+    private List<Float> zAccelerometerBuffer = new ArrayList<>();
+    private List<Float> xMagneticBuffer = new ArrayList<>();
+    private List<Float> yMagneticBuffer = new ArrayList<>();
+    private List<Float> zMagneticBuffer = new ArrayList<>();
+    private List<Float> xGyroscopeBuffer = new ArrayList<>();
+    private List<Float> yGyroscopeBuffer = new ArrayList<>();
+    private List<Float> zGyroscopeBuffer = new ArrayList<>();
+    private List<Float> xRotationBuffer = new ArrayList<>();
+    private List<Float> yRotationBuffer = new ArrayList<>();
+    private List<Float> zRotationBuffer = new ArrayList<>();
+    private List<Float> xLinearAccelBuffer = new ArrayList<>();
+    private List<Float> yLinearAccelBuffer = new ArrayList<>();
+    private List<Float> zLinearAccelBuffer = new ArrayList<>();
     private List<Float> xGravityBuffer = new ArrayList<>();
     private List<Float> yGravityBuffer = new ArrayList<>();
     private List<Float> zGravityBuffer = new ArrayList<>();
