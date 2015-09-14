@@ -136,12 +136,14 @@ public class ALPActivity extends Activity implements SensorEventListener {
                         if (!isChecked){
                             Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
                             mRecordingTouchData = false;
+                            mPatternView.setPracticeMode(false);
                             writeDataToCSV();
                             //TODO:clear data
                         }
                         else{
                             Log.i("RECORDINGDATA","Toggled to true, recording the data");
                             mRecordingTouchData = true;
+                            mPatternView.setPracticeMode(true);
                         }
                     }
                 });
@@ -390,6 +392,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        mPatternView.onTouchEvent(event);
         if (mRecordingTouchData) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -431,6 +434,6 @@ public class ALPActivity extends Activity implements SensorEventListener {
                     break;
             }
         }
-        return false;
+        return true;
     }
 }
