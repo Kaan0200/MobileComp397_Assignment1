@@ -78,11 +78,21 @@ public class ALPActivity extends Activity implements SensorEventListener {
     // these are lists used to save the touch information
     // ------- Part 4
     private List<Long> timeStampBuffer = new ArrayList<>();
-    private List<Float> xAccelerometerBuffer, yAccelerometerBuffer, zAccelerometerBuffer = new ArrayList<>();
-    private List<Float> xMagneticBuffer, yMagneticBuffer, zMagneticBuffer = new ArrayList<>();
-    private List<Float> xGyroscopeBuffer, yGyroscopeBuffer, zGyroscopeBuffer = new ArrayList<>();
-    private List<Float> xRotationBuffer, yRotationBuffer, zRotationBuffer = new ArrayList<>();
-    private List<Float> xLinearAccelBuffer, yLinearAccelBuffer, zLinearAccelBuffer = new ArrayList<>();
+    private List<Float> xAccelerometerBuffer = new ArrayList<>(),
+            yAccelerometerBuffer = new ArrayList<>(),
+            zAccelerometerBuffer = new ArrayList<>();
+    private List<Float> xMagneticBuffer = new ArrayList<>(),
+            yMagneticBuffer = new ArrayList<>(),
+            zMagneticBuffer = new ArrayList<>();
+    private List<Float> xGyroscopeBuffer = new ArrayList<>(),
+            yGyroscopeBuffer = new ArrayList<>(),
+            zGyroscopeBuffer = new ArrayList<>();
+    private List<Float> xRotationBuffer = new ArrayList<>(),
+            yRotationBuffer = new ArrayList<>(),
+            zRotationBuffer = new ArrayList<>();
+    private List<Float> xLinearAccelBuffer = new ArrayList<>(),
+            yLinearAccelBuffer = new ArrayList<>(),
+            zLinearAccelBuffer = new ArrayList<>();
     private List<Float> xGravityBuffer, yGravityBuffer, zGravityBuffer = new ArrayList<>();
     private List<Float> xPositionsBuffer, yPositionsBuffer = new ArrayList<>();
     private List<Float> xVelocityBuffer, yVelocityBuffer = new ArrayList<>();
