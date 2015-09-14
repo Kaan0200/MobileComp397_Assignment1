@@ -126,7 +126,8 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
         setContentView(R.layout.activity_alp);
         mPatternView = (LockPatternView) findViewById(R.id.pattern_view);
-        // button hookup and action
+
+        // ADJUST GENERATE PATTERN BUTTON
         mGenerateButton = (Button) findViewById(R.id.generate_button);
         mGenerateButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -139,6 +140,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 }
         );
 
+        // ADJUST PRACTICE BUTTON
         mPracticeToggle = (ToggleButton) findViewById(R.id.practice_toggle);
         mPracticeToggle.setOnCheckedChangeListener(
                 new ToggleButton.OnCheckedChangeListener() {
@@ -146,14 +148,14 @@ public class ALPActivity extends Activity implements SensorEventListener {
                                                  boolean isChecked) {
 
                         mGenerateButton.setEnabled(!isChecked);
-                        if (!isChecked){
+                        if (!isChecked) {
                             Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
                             mRecordingTouchData = false;
                             mPatternView.setPracticeMode(false);
                             writeDataToCSV();
                             //TODO:clear data
                         }
-                        else{
+                        else {
                             Log.i("RECORDINGDATA","Toggled to true, recording the data");
                             mRecordingTouchData = true;
                             mPatternView.setPracticeMode(true);
@@ -205,46 +207,46 @@ public class ALPActivity extends Activity implements SensorEventListener {
     @Override
     public final void onSensorChanged(SensorEvent event){
         if (mRecordingSensorData){
-            timeStampList.add(event.timestamp);
+            timeStampBuffer.add(event.timestamp);
             if (event.sensor == mAccelerometer){
-                xAccelerometerList.add(event.values[0]);
-                yAccelerometerList.add(event.values[1]);
-                zAccelerometerList.add(event.values[2]);
+                xAccelerometerBuffer.add(event.values[0]);
+                yAccelerometerBuffer.add(event.values[1]);
+                zAccelerometerBuffer.add(event.values[2]);
                 Log.i("SENSORDATA","Accelerometer(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] +")");
             }
             if (event.sensor == mMagnetometer){
-                xMagneticList.add(event.values[0]);
-                yMagneticList.add(event.values[1]);
-                zMagneticList.add(event.values[2]);
+                xMagneticBuffer.add(event.values[0]);
+                yMagneticBuffer.add(event.values[1]);
+                zMagneticBuffer.add(event.values[2]);
                 Log.i("SENSORDATA", "Magnetometer(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mGyroscope){
-                yGyroscopeList.add(event.values[0]);
-                xGyroscopeList.add(event.values[1]);
-                zGyroscopeList.add(event.values[2]);
+                yGyroscopeBuffer.add(event.values[0]);
+                xGyroscopeBuffer.add(event.values[1]);
+                zGyroscopeBuffer.add(event.values[2]);
                 Log.i("SENSORDATA", "Gyroscope(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mRotation){
-                yRotationList.add(event.values[0]);
-                zRotationList.add(event.values[1]);
-                xRotationList.add(event.values[2]);
+                yRotationBuffer.add(event.values[0]);
+                zRotationBuffer.add(event.values[1]);
+                xRotationBuffer.add(event.values[2]);
                 Log.i("SENSORDATA", "Rotation(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mLinearAcc){
-                xLinearAccelList.add(event.values[0]);
-                yLinearAccelList.add(event.values[1]);
-                zLinearAccelList.add(event.values[2]);
+                xLinearAccelBuffer.add(event.values[0]);
+                yLinearAccelBuffer.add(event.values[1]);
+                zLinearAccelBuffer.add(event.values[2]);
                 Log.i("SENSORDATA", "LinearAcceleration(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mGravity){
-                xGravityList.add(event.values[0]);
-                yGravityList.add(event.values[1]);
-                zGravityList.add(event.values[2]);
+                xGravityBuffer.add(event.values[0]);
+                yGravityBuffer.add(event.values[1]);
+                zGravityBuffer.add(event.values[2]);
                 Log.i("SENSORDATA", "Gravity(" +
                         event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
@@ -288,7 +290,8 @@ public class ALPActivity extends Activity implements SensorEventListener {
                     "TYPE_ROTATION_VECTOR_X, TYPE_ROTATION_VECTOR_Y, TYPE_ROTATION_VECTOR_Z, " +
                     "TYPE_LINEAR_ACCELERATION_X, TYPE_LINEAR_ACCELERATION_Y, TYPE_LINEAR_ACCELERATION_Z, " +
                     "TYPE_GRAVITY_X, TYPE_GRAVITY_Y, TYPE_GRAVITY_Z, " +
-                    "position_X, position_Y, velocity_X, velocity_Y, pressure, size, \n");
+                    "position_X, position_Y, velocity_X, velocity_Y, pressure, size, " +
+                    "mCurrentPattern, Counter, \n");
 
             for(int i = 0; i < xPositionsList.size(); i++){
                 if (i > timeStampList.size() - 1) {
@@ -421,6 +424,13 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 } else {
                     outputString.append(sizeList.get(i) + ", ");
                 }
+
+                // Current pattern string
+                outputString.append(mPatternView.mCurrentPattern.toString() + ", ");
+
+                // Counter value
+                outputString.append(counter + ", ");
+
                 // line break
                 outputString.append("\n");
             }
@@ -556,12 +566,12 @@ public class ALPActivity extends Activity implements SensorEventListener {
         float yPos = event.getY();
         float pressure = event.getPressure();
         float size = event.getSize();
-        xVelocityList.add(0f);
-        yVelocityList.add(0f);
-        xPositionsList.add(xPos);
-        yPositionsList.add(yPos);
-        pressureList.add(pressure);
-        sizeList.add(size);
+        xVelocityBuffer.add(0f);
+        yVelocityBuffer.add(0f);
+        xPositionsBuffer.add(xPos);
+        yPositionsBuffer.add(yPos);
+        pressureBuffer.add(pressure);
+        sizeBuffer.add(size);
     }
 
     @Override
@@ -590,8 +600,10 @@ public class ALPActivity extends Activity implements SensorEventListener {
         return true;
     }
 
+    /* Manipulates sensor data based on if the most recent practice pattern was correct */
     private void processPracticeResults() {
         if (mPatternView.testResult == "true") {
+            Log.i("RESULT-PASS", "Practice pattern was correct, saving cache data to be written");
             // Save touch sensor cache
             xPositionsList.addAll(xPositionsBuffer);
             yPositionsList.addAll(yPositionsBuffer);
@@ -604,7 +616,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
             // Save other sensor cache
             timeStampList.addAll(timeStampBuffer);
-            
+
             xAccelerometerList.addAll(xAccelerometerBuffer);
             yAccelerometerList.addAll(yAccelerometerBuffer);
             zAccelerometerList.addAll(zAccelerometerBuffer);
@@ -630,6 +642,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
             zGravityList.addAll(zGravityBuffer);
         }
         else {  // Practice pattern incorrect
+            Log.i("RESULT-FAIL", "Practice pattern was INCORRECT, emptying cached data");
             // Clear touch sensor data cache
             xPositionsBuffer.clear();
             yPositionsBuffer.clear();
