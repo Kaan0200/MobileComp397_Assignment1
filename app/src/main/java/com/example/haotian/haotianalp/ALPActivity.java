@@ -56,6 +56,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
     protected String mHighlightMode;
     protected boolean mTactileFeedback;
     protected boolean mRecordingTouchData;
+    protected boolean mRecordingSensorData;
 
     private static final String TAG = "SensorActivity";
     private static final String TAGmotion = "motionEvent";
@@ -76,7 +77,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
     // these are lists used to save the touch information
     // ------- Part 3
-    public List<String> timeStampList = new ArrayList<>();
+    public List<Long> timeStampList = new ArrayList<>();
     public List<Float> xAccelerometerList = new ArrayList<>();
     public List<Float> yAccelerometerList = new ArrayList<>();
     public List<Float> zAccelerometerList = new ArrayList<>();
@@ -163,7 +164,12 @@ public class ALPActivity extends Activity implements SensorEventListener {
     protected void onResume()
     {
         super.onResume();
-
+        mSensorManager.registerListener(this, mAccelerometer, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mMagnetometer, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mGyroscope, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mRotation, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mLinearAcc, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mGravity, mSensorManager.SENSOR_DELAY_NORMAL);
 
         updateFromPrefs();
     }
@@ -177,19 +183,61 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
     @Override
     protected void onPause() {
-
+        // turn off the sensors to save battery
         super.onPause();
-
+        mSensorManager.unregisterListener(this);
     }
+    @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy){}
 
     @Override
-    public final void onAccuracyChanged(Sensor sensor, int accuracy){
-
+    public final void onSensorChanged(SensorEvent event){
+        if (mRecordingSensorData){
+            timeStampList.add(event.timestamp);
+            if (event.sensor == mAccelerometer){
+                xAccelerometerList.add(event.values[0]);
+                yAccelerometerList.add(event.values[1]);
+                zAccelerometerList.add(event.values[2]);
+                Log.i("SENSORDATA","Accelerometer(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] +")");
+            }
+            if (event.sensor == mMagnetometer){
+                xMagneticList.add(event.values[0]);
+                yMagneticList.add(event.values[1]);
+                zMagneticList.add(event.values[2]);
+                Log.i("SENSORDATA", "Magnetometer(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
+            }
+            if (event.sensor == mGyroscope){
+                yGyroscopeList.add(event.values[0]);
+                xGyroscopeList.add(event.values[1]);
+                zGyroscopeList.add(event.values[2]);
+                Log.i("SENSORDATA", "Gyroscope(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
+            }
+            if (event.sensor == mRotation){
+                yRotationList.add(event.values[0]);
+                zRotationList.add(event.values[1]);
+                xRotationList.add(event.values[2]);
+                Log.i("SENSORDATA", "Rotation(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
+            }
+            if (event.sensor == mLinearAcc){
+                xLinearAccelList.add(event.values[0]);
+                yLinearAccelList.add(event.values[1]);
+                zLinearAccelList.add(event.values[2]);
+                Log.i("SENSORDATA", "LinearAcceleration(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
+            }
+            if (event.sensor == mGravity){
+                xGravityList.add(event.values[0]);
+                yGravityList.add(event.values[1]);
+                zGravityList.add(event.values[2]);
+                Log.i("SENSORDATA", "Gravity(" +
+                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
+            }
+        }
     }
-
-    // not being used
-    @Override
-    public final void onSensorChanged(SensorEvent event){ }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -221,9 +269,110 @@ public class ALPActivity extends Activity implements SensorEventListener {
             StringBuilder outputString = new StringBuilder();
             //loop through all the data we want to write for each column
             // do the header first
-            outputString.append("position_X, position_Y, velocity_X, velocity_Y, pressure, size, \n");
+            outputString.append("TimeStamp, " +
+                    "TYPE_ACCELEROMETER_X, TYPE_ACCELEROMETER_Y, TYPE_ACCELEROMETER_Z, " +
+                    "TYPE_MAGNETIC_FIELD_X, TYPE_MAGNETIC_FIELD_Y, TYPE_MAGNETIC_FIELD_Z, " +
+                    "TYPE_GYROSCOPE_X, TYPE_GYROSCOPE_Y, TYPE_GYROSCOPE_Z, " +
+                    "TYPE_ROTATION_VECTOR_X, TYPE_ROTATION_VECTOR_Y, TYPE_ROTATION_VECTOR_Z, " +
+                    "TYPE_LINEAR_ACCELERATION_X, TYPE_LINEAR_ACCELERATION_Y, TYPE_LINEAR_ACCELERATION_Z, " +
+                    "TYPE_GRAVITY_X, TYPE_GRAVITY_Y, TYPE_GRAVITY_Z, " +
+                    "position_X, position_Y, velocity_X, velocity_Y, pressure, size, \n");
 
             for(int i = 0; i < xPositionsList.size(); i++){
+                if (i > timeStampList.size() - 1) {
+                    outputString.append("bad, ");
+                }else {
+                    outputString.append(timeStampList.get(i) + ", ");
+                }
+                // this is the sensors
+                if (i > xAccelerometerList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xAccelerometerList.get(i) + ", ");
+                }
+                if (i > yAccelerometerList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yAccelerometerList.get(i) + ", ");
+                }
+                if (i > zAccelerometerList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(zAccelerometerList.get(i) + ", ");
+                }
+                if (i > xMagneticList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xMagneticList.get(i) + ", ");
+                }
+                if (i > yMagneticList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yMagneticList.get(i) + ", ");
+                }
+                if (i > zMagneticList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(zMagneticList.get(i) + ", ");
+                }if (i > xGyroscopeList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xGyroscopeList.get(i) + ", ");}
+                if (i > yGyroscopeList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yGyroscopeList.get(i) + ", ");
+                }
+                if (i > zGyroscopeList.size() - 1) {
+                    outputString.append("bad, ");
+                 } else {
+                    outputString.append(zGyroscopeList.get(i) + ", ");
+                }
+                if (i > xRotationList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xRotationList.get(i) + ", ");
+                }
+                if (i > yRotationList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yRotationList.get(i) + ", ");
+                }
+                if (i > zRotationList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(zRotationList.get(i) + ", ");
+                }
+                if (i > xLinearAccelList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xLinearAccelList.get(i) + ", ");
+                }
+                if (i > yLinearAccelList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yLinearAccelList.get(i) + ", ");
+                }
+                if (i > zLinearAccelList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(zLinearAccelList.get(i) + ", ");
+                }
+                if (i > xGravityList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(xGravityList.get(i) + ", ");
+                }
+                if (i > yGravityList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(yGravityList.get(i) + ", ");
+                }
+                if (i > zGravityList.size() - 1) {
+                    outputString.append("bad, ");
+                } else {
+                    outputString.append(zGravityList.get(i) + ", ");
+                }
                 // X Position
                 if (i > xPositionsList.size()-1){
                     outputString.append("bad, ");
@@ -258,7 +407,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 if (i > sizeList.size()-1) {
                     outputString.append("bad, ");
                 } else {
-                    outputString.append(pressureList.get(i) + ", ");
+                    outputString.append(sizeList.get(i) + ", ");
                 }
                 // line break
                 outputString.append("\n");
@@ -272,9 +421,9 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
             // scan the new media so the device knows it's there and it can be accessed
             MediaScannerConnection.scanFile(this,
-                    new String[] { file.toString() }, null,
-                    new MediaScannerConnection.OnScanCompletedListener(){
-                        public void onScanCompleted(String path, Uri uri){
+                    new String[]{file.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
                             Log.i("ExternalStorage", "Scanned " + path + ":");
                             Log.i("ExternalStorage", "-> uri=" + uri);
                         }
@@ -390,47 +539,37 @@ public class ALPActivity extends Activity implements SensorEventListener {
         mPatternView.setTactileFeedbackEnabled(enabled);
     }
 
+    private void recordEvents(MotionEvent event){
+        float xPos = event.getX();
+        float yPos = event.getY();
+        float pressure = event.getPressure();
+        float size = event.getSize();
+        xVelocityList.add(0f);
+        yVelocityList.add(0f);
+        xPositionsList.add(xPos);
+        yPositionsList.add(yPos);
+        pressureList.add(pressure);
+        sizeList.add(size);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mPatternView.onTouchEvent(event);
         if (mRecordingTouchData) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    float xPos = event.getX();
-                    float yPos = event.getY();
-                    float pressure = event.getPressure();
-                    float size = event.getSize();
-                    xVelocityList.add(0f);
-                    yVelocityList.add(0f);
-                    xPositionsList.add(xPos);
-                    yPositionsList.add(yPos);
-                    pressureList.add(pressure);
-                    sizeList.add(size);
-                    Log.i("DOWN", "Touch started at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    mRecordingSensorData = true;
+                    recordEvents(event);
+                    Log.i("DOWN", "Touch started at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    xPos = event.getX();
-                    yPos = event.getY();
-                    //TODO: Velocity
-                    pressure = event.getPressure();
-                    size = event.getSize();
-                    xPositionsList.add(xPos);
-                    yPositionsList.add(yPos);
-                    pressureList.add(pressure);
-                    sizeList.add(size);
-                    Log.i("MOVE", "Touch moved at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    recordEvents(event);
+                    Log.i("MOVE", "Touch moved at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_UP:
-                    xPos = event.getX();
-                    yPos = event.getY();
-                    //TODO: Velocity
-                    pressure = event.getPressure();
-                    size = event.getSize();
-                    xPositionsList.add(xPos);
-                    yPositionsList.add(yPos);
-                    pressureList.add(pressure);
-                    sizeList.add(size);
-                    Log.i("UP", "Touch lifted at (" + xPos + ", " + yPos + "), size:" + size + ", pressure:" + pressure);
+                    mRecordingSensorData = false;
+                    recordEvents(event);
+                    Log.i("UP", "Touch lifted at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
             }
         }
