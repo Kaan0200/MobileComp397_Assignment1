@@ -697,25 +697,4 @@ public class ALPActivity extends Activity implements SensorEventListener {
             zGravityBuffer.clear();
         }
     }
-/*
-    public List<Long> timeStampList = new ArrayList<>();
-    public List<Float> xAccelerometerList = new ArrayList<>();
-    public List<Float> yAccelerometerList = new ArrayList<>();
-    public List<Float> zAccelerometerList = new ArrayList<>();
-    public List<Float> xMagneticList = new ArrayList<>();
-    public List<Float> yMagneticList = new ArrayList<>();
-    public List<Float> zMagneticList = new ArrayList<>();
-    public List<Float> xGyroscopeList = new ArrayList<>();
-    public List<Float> yGyroscopeList = new ArrayList<>();
-    public List<Float> zGyroscopeList = new ArrayList<>();
-    public List<Float> xRotationList = new ArrayList<>();
-    public List<Float> yRotationList = new ArrayList<>();
-    public List<Float> zRotationList = new ArrayList<>();
-    public List<Float> xLinearAccelList = new ArrayList<>();
-    public List<Float> yLinearAccelList = new ArrayList<>();
-    public List<Float> zLinearAccelList = new ArrayList<>();
-    public List<Float> xGravityList = new ArrayList<>();
-    public List<Float> yGravityList = new ArrayList<>();
-    public List<Float> zGravityList = new ArrayList<>();
-    */
 }
