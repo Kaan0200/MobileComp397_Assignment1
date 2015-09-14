@@ -270,8 +270,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -312,132 +311,132 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
             for(int i = 0; i < xPositionsList.size(); i++){
                 if (i > timeStampList.size() - 1) {
-                    outputString.append(timeStampList.get(timeStampList.size()-1));
+                    outputString.append(timeStampList.get(timeStampList.size()-1) + ", ");
                 }else {
                     outputString.append(timeStampList.get(i) + ", ");
                 }
                 // this is the sensors
                 if (i > xAccelerometerList.size() - 1) {
-                    outputString.append(xAccelerometerList.get(xAccelerometerList.size()-1));
+                    outputString.append(xAccelerometerList.get(xAccelerometerList.size()-1) + ", ");
                 } else {
                     outputString.append(xAccelerometerList.get(i) + ", ");
                 }
                 if (i > yAccelerometerList.size() - 1) {
-                    outputString.append(yAccelerometerList.get(yAccelerometerList.size()-1));
+                    outputString.append(yAccelerometerList.get(yAccelerometerList.size()-1) + ", ");
                 } else {
                     outputString.append(yAccelerometerList.get(i) + ", ");
                 }
                 if (i > zAccelerometerList.size() - 1) {
-                    outputString.append(zAccelerometerList.get(zAccelerometerList.size()-1));
+                    outputString.append(zAccelerometerList.get(zAccelerometerList.size()-1) + ", ");
                 } else {
                     outputString.append(zAccelerometerList.get(i) + ", ");
                 }
                 if (i > xMagneticList.size() - 1) {
-                    outputString.append(xMagneticList.get(xMagneticList.size()-1));
+                    outputString.append(xMagneticList.get(xMagneticList.size()-1) + ", ");
                 } else {
                     outputString.append(xMagneticList.get(i) + ", ");
                 }
                 if (i > yMagneticList.size() - 1) {
-                    outputString.append(yMagneticList.get(yMagneticList.size()-1));
+                    outputString.append(yMagneticList.get(yMagneticList.size()-1) + ", ");
                 } else {
                     outputString.append(yMagneticList.get(i) + ", ");
                 }
                 if (i > zMagneticList.size() - 1) {
-                    outputString.append(zMagneticList.get(zMagneticList.size()-1));
+                    outputString.append(zMagneticList.get(zMagneticList.size()-1) + ", ");
                 } else {
                     outputString.append(zMagneticList.get(i) + ", ");
                 }if (i > xGyroscopeList.size() - 1) {
-                    outputString.append(xGyroscopeList.get(xGyroscopeList.size()-1));
+                    outputString.append(xGyroscopeList.get(xGyroscopeList.size()-1) + ", ");
                 } else {
                     outputString.append(xGyroscopeList.get(i) + ", ");}
                 if (i > yGyroscopeList.size() - 1) {
-                    outputString.append(yGyroscopeList.get(yGyroscopeList.size()-1));
+                    outputString.append(yGyroscopeList.get(yGyroscopeList.size()-1) + ", ");
                 } else {
                     outputString.append(yGyroscopeList.get(i) + ", ");
                 }
                 if (i > zGyroscopeList.size() - 1) {
-                    outputString.append(zGyroscopeList.get(zGyroscopeList.size()-1));
+                    outputString.append(zGyroscopeList.get(zGyroscopeList.size()-1) + ", ");
                  } else {
                     outputString.append(zGyroscopeList.get(i) + ", ");
                 }
                 if (i > xRotationList.size() - 1) {
-                    outputString.append(xRotationList.get(xRotationList.size()-1));
+                    outputString.append(xRotationList.get(xRotationList.size()-1) + ", ");
                 } else {
                     outputString.append(xRotationList.get(i) + ", ");
                 }
                 if (i > yRotationList.size() - 1) {
-                    outputString.append(yRotationList.get(yRotationList.size()-1));
+                    outputString.append(yRotationList.get(yRotationList.size()-1) + ", ");
                 } else {
                     outputString.append(yRotationList.get(i) + ", ");
                 }
                 if (i > zRotationList.size() - 1) {
-                    outputString.append(zRotationList.get(zRotationList.size()-1));
+                    outputString.append(zRotationList.get(zRotationList.size()-1) + ", ");
                 } else {
                     outputString.append(zRotationList.get(i) + ", ");
                 }
                 if (i > xLinearAccelList.size() - 1) {
-                    outputString.append(xLinearAccelList.get(xLinearAccelList.size()-1));
+                    outputString.append(xLinearAccelList.get(xLinearAccelList.size()-1) + ", ");
                 } else {
                     outputString.append(xLinearAccelList.get(i) + ", ");
                 }
                 if (i > yLinearAccelList.size() - 1) {
-                    outputString.append(yLinearAccelList.get(yLinearAccelList.size()-1));
+                    outputString.append(yLinearAccelList.get(yLinearAccelList.size()-1) + ", ");
                 } else {
                     outputString.append(yLinearAccelList.get(i) + ", ");
                 }
                 if (i > zLinearAccelList.size() - 1) {
-                    outputString.append(zLinearAccelList.get(zLinearAccelList.size()-1));
+                    outputString.append(zLinearAccelList.get(zLinearAccelList.size()-1) + ", ");
                 } else {
                     outputString.append(zLinearAccelList.get(i) + ", ");
                 }
                 if (i > xGravityList.size() - 1) {
-                    outputString.append(xGravityList.get(xGravityList.size()-1));
+                    outputString.append(xGravityList.get(xGravityList.size()-1) + ", ");
                 } else {
                     outputString.append(xGravityList.get(i) + ", ");
                 }
                 if (i > yGravityList.size() - 1) {
-                    outputString.append(yGravityList.get(yGravityList.size()-1));
+                    outputString.append(yGravityList.get(yGravityList.size()-1) + ", ");
                 } else {
                     outputString.append(yGravityList.get(i) + ", ");
                 }
                 if (i > zGravityList.size() - 1) {
-                    outputString.append(zGravityList.get(zGravityList.size()-1));
+                    outputString.append(zGravityList.get(zGravityList.size()-1) + ", ");
                 } else {
                     outputString.append(zGravityList.get(i) + ", ");
                 }
                 // X Position
                 if (i > xPositionsList.size()-1){
-                    outputString.append(xPositionsList.get(xPositionsList.size()-1));
+                    outputString.append(xPositionsList.get(xPositionsList.size()-1) + ", ");
                 } else {
                     outputString.append(xPositionsList.get(i) + ", ");
                 }
                 // Y Position
                 if (i > yPositionsList.size()-1){
-                    outputString.append(yPositionsList.get(yPositionsList.size()-1));
+                    outputString.append(yPositionsList.get(yPositionsList.size()-1) + ", ");
                 } else {
                     outputString.append(yPositionsList.get(i) + ", ");
                 }
                 // X Velocity
                 if (i > xVelocityList.size()-1){
-                    outputString.append(xVelocityList.get(xVelocityList.size()-1));
+                    outputString.append(xVelocityList.get(xVelocityList.size()-1) + ", ");
                 } else {
                     outputString.append(xVelocityList.get(i) + ", ");
                 }
                 // Y Velocity
                 if (i > yVelocityList.size()-1){
-                    outputString.append(yVelocityList.get(yVelocityList.size()-1));
+                    outputString.append(yVelocityList.get(yVelocityList.size()-1) + ", ");
                 } else {
                     outputString.append(yVelocityList.get(i) + ", ");
                 }
                 // Pressure
                 if (i > pressureList.size()-1){
-                    outputString.append(pressureList.get(pressureList.size()-1));
+                    outputString.append(pressureList.get(pressureList.size()-1) + ", ");
                 } else {
                     outputString.append(pressureList.get(i) + ", ");
                 }
                 // Size
                 if (i > sizeList.size()-1) {
-                    outputString.append(sizeList.get(sizeList.size()-1));
+                    outputString.append(sizeList.get(sizeList.size()-1) + ", ");
                 } else {
                     outputString.append(sizeList.get(i) + ", ");
                 }
