@@ -89,7 +89,7 @@ public class PatternGenerator
                         // Get point between last point and point 2 away
                         Point between = null;
 
-                        if (lastPoint.y == availablePoints.get(i).y) {
+                        if (lastPoint.x == availablePoints.get(i).x) {
                             // Straight line up or down case
                             between = new Point(
                                     availablePoints.get(i).x,
