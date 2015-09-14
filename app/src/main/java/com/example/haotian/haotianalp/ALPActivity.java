@@ -77,6 +77,8 @@ public class ALPActivity extends Activity implements SensorEventListener {
     // these are lists used to save the touch information
     // ------- Part 4
     private List<Long> timeStampBuffer = new ArrayList<>();
+    private List<Integer> counterBuffer = new ArrayList<>();
+    private List<Integer> counterList = new ArrayList<>();
 
     private List<Float> xAccelerometerBuffer = new ArrayList<>();
     private List<Float> yAccelerometerBuffer = new ArrayList<>();
@@ -444,7 +446,12 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 outputString.append(mPatternView.mCurrentPattern.toString().replace(',',' ') + ", ");
 
                 // Counter value
-                outputString.append(counter + ", ");
+                if (i > counterList.size()-1) {
+                    outputString.append(counter + ", ");
+                }
+                else {
+                    outputString.append(counterList.get(i) + ", ");
+                }
 
                 // line break
                 outputString.append("\n");
@@ -587,6 +594,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
         yPositionsBuffer.add(yPos);
         pressureBuffer.add(pressure);
         sizeBuffer.add(size);
+        counterBuffer.add(counter);
     }
 
     private void recordTouchEventsWithVelocity(MotionEvent event){
@@ -600,6 +608,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
         yPositionsBuffer.add(yPos);
         pressureBuffer.add(pressure);
         sizeBuffer.add(size);
+        counterBuffer.add(counter);
     }
 
     @Override
@@ -674,6 +683,8 @@ public class ALPActivity extends Activity implements SensorEventListener {
             xGravityList.addAll(xGravityBuffer);
             yGravityList.addAll(yGravityBuffer);
             zGravityList.addAll(zGravityBuffer);
+
+            counterList.addAll(counterBuffer);
         }
         else {  // Practice pattern incorrect
             Log.i("RESULT-FAIL", "Practice pattern was INCORRECT, emptying cached data");
@@ -713,6 +724,8 @@ public class ALPActivity extends Activity implements SensorEventListener {
             xGravityBuffer.clear();
             yGravityBuffer.clear();
             zGravityBuffer.clear();
+
+            counterBuffer.clear();
         }
     }
 }
