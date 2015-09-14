@@ -83,10 +83,15 @@ public class ALPActivity extends Activity implements SensorEventListener {
     private List<Float> xGyroscopeBuffer, yGyroscopeBuffer, zGyroscopeBuffer = new ArrayList<>();
     private List<Float> xRotationBuffer, yRotationBuffer, zRotationBuffer = new ArrayList<>();
     private List<Float> xLinearAccelBuffer, yLinearAccelBuffer, zLinearAccelBuffer = new ArrayList<>();
-    private List<Float> xGravityBuffer, yGravityBuffer, zGravityBuffer = new ArrayList<>();
-    private List<Float> xPositionsBuffer, yPositionsBuffer = new ArrayList<>();
-    private List<Float> xVelocityBuffer, yVelocityBuffer = new ArrayList<>();
-    private List<Float> pressureBuffer, sizeBuffer = new ArrayList<>();
+    private List<Float> xGravityBuffer = new ArrayList<>();
+    private List<Float> yGravityBuffer = new ArrayList<>();
+    private List<Float> zGravityBuffer = new ArrayList<>();
+    private List<Float> xPositionsBuffer = new ArrayList<>();
+    private List<Float> yPositionsBuffer = new ArrayList<>();
+    private List<Float> xVelocityBuffer = new ArrayList<>();
+    private List<Float> yVelocityBuffer = new ArrayList<>();
+    private List<Float> pressureBuffer = new ArrayList<>();
+    private List<Float> sizeBuffer = new ArrayList<>();
 
     // ------- Part 3
     public List<Long> timeStampList = new ArrayList<>();
