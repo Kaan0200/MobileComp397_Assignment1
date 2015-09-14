@@ -76,6 +76,18 @@ public class ALPActivity extends Activity implements SensorEventListener {
     private String myStr = "";
 
     // these are lists used to save the touch information
+    // ------- Part 4
+    private List<Long> timeStampBuffer = new ArrayList<>();
+    private List<Float> xAccelerometerBuffer, yAccelerometerBuffer, zAccelerometerBuffer = new ArrayList<>();
+    private List<Float> xMagneticBuffer, yMagneticBuffer, zMagneticBuffer = new ArrayList<>();
+    private List<Float> xGyroscopeBuffer, yGyroscopeBuffer, zGyroscopeBuffer = new ArrayList<>();
+    private List<Float> xRotationBuffer, yRotationBuffer, zRotationBuffer = new ArrayList<>();
+    private List<Float> xLinearAccelBuffer, yLinearAccelBuffer, zLinearAccelBuffer = new ArrayList<>();
+    private List<Float> xGravityBuffer, yGravityBuffer, zGravityBuffer = new ArrayList<>();
+    private List<Float> xPositionsBuffer, yPositionsBuffer = new ArrayList<>();
+    private List<Float> xVelocityBuffer, yVelocityBuffer = new ArrayList<>();
+    private List<Float> pressureBuffer, sizeBuffer = new ArrayList<>();
+
     // ------- Part 3
     public List<Long> timeStampList = new ArrayList<>();
     public List<Float> xAccelerometerList = new ArrayList<>();
@@ -569,10 +581,112 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 case MotionEvent.ACTION_UP:
                     mRecordingSensorData = false;
                     recordEvents(event);
+                    counter++;
+                    processPracticeResults();
                     Log.i("UP", "Touch lifted at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
             }
         }
         return true;
     }
+
+    private void processPracticeResults() {
+        if (mPatternView.testResult == "true") {
+            // Save touch sensor cache
+            xPositionsList.addAll(xPositionsBuffer);
+            yPositionsList.addAll(yPositionsBuffer);
+
+            xVelocityList.addAll(xVelocityBuffer);
+            yVelocityList.addAll(yVelocityBuffer);
+
+            pressureList.addAll(pressureBuffer);
+            sizeList.addAll(sizeBuffer);
+
+            // Save other sensor cache
+            timeStampList.addAll(timeStampBuffer);
+            
+            xAccelerometerList.addAll(xAccelerometerBuffer);
+            yAccelerometerList.addAll(yAccelerometerBuffer);
+            zAccelerometerList.addAll(zAccelerometerBuffer);
+
+            xMagneticList.addAll(xMagneticBuffer);
+            yMagneticList.addAll(yMagneticBuffer);
+            zMagneticList.addAll(zMagneticBuffer);
+
+            xGyroscopeList.addAll(xGyroscopeBuffer);
+            yGyroscopeList.addAll(yGyroscopeBuffer);
+            zGyroscopeList.addAll(zGyroscopeBuffer);
+
+            xRotationList.addAll(xRotationBuffer);
+            yRotationList.addAll(yRotationBuffer);
+            zRotationList.addAll(zRotationBuffer);
+
+            xLinearAccelList.addAll(xLinearAccelBuffer);
+            yLinearAccelList.addAll(yLinearAccelBuffer);
+            zLinearAccelList.addAll(zLinearAccelBuffer);
+
+            xGravityList.addAll(xGravityBuffer);
+            yGravityList.addAll(yGravityBuffer);
+            zGravityList.addAll(zGravityBuffer);
+        }
+        else {  // Practice pattern incorrect
+            // Clear touch sensor data cache
+            xPositionsBuffer.clear();
+            yPositionsBuffer.clear();
+
+            xVelocityBuffer.clear();
+            yVelocityBuffer.clear();
+
+            pressureBuffer.clear();
+            sizeBuffer.clear();
+
+            // Save other sensor cache
+            timeStampBuffer.clear();
+
+            xAccelerometerBuffer.clear();
+            yAccelerometerBuffer.clear();
+            zAccelerometerBuffer.clear();
+
+            xMagneticBuffer.clear();
+            yMagneticBuffer.clear();
+            zMagneticBuffer.clear();
+
+            xGyroscopeBuffer.clear();
+            yGyroscopeBuffer.clear();
+            zGyroscopeBuffer.clear();
+
+            xRotationBuffer.clear();
+            yRotationBuffer.clear();
+            zRotationBuffer.clear();
+
+            xLinearAccelBuffer.clear();
+            yLinearAccelBuffer.clear();
+            zLinearAccelBuffer.clear();
+
+            xGravityBuffer.clear();
+            yGravityBuffer.clear();
+            zGravityBuffer.clear();
+        }
+    }
+/*
+    public List<Long> timeStampList = new ArrayList<>();
+    public List<Float> xAccelerometerList = new ArrayList<>();
+    public List<Float> yAccelerometerList = new ArrayList<>();
+    public List<Float> zAccelerometerList = new ArrayList<>();
+    public List<Float> xMagneticList = new ArrayList<>();
+    public List<Float> yMagneticList = new ArrayList<>();
+    public List<Float> zMagneticList = new ArrayList<>();
+    public List<Float> xGyroscopeList = new ArrayList<>();
+    public List<Float> yGyroscopeList = new ArrayList<>();
+    public List<Float> zGyroscopeList = new ArrayList<>();
+    public List<Float> xRotationList = new ArrayList<>();
+    public List<Float> yRotationList = new ArrayList<>();
+    public List<Float> zRotationList = new ArrayList<>();
+    public List<Float> xLinearAccelList = new ArrayList<>();
+    public List<Float> yLinearAccelList = new ArrayList<>();
+    public List<Float> zLinearAccelList = new ArrayList<>();
+    public List<Float> xGravityList = new ArrayList<>();
+    public List<Float> yGravityList = new ArrayList<>();
+    public List<Float> zGravityList = new ArrayList<>();
+    */
 }
