@@ -64,12 +64,22 @@ public class PatternGenerator
                     // 2 away, left or right
                     if (Math.abs(lastPoint.x - availablePoints.get(i).x) == 2 ) {
                         // Get point between last point and point 2 away
-                        Point between = new Point(
-                                Math.abs(availablePoints.get(i).x - 1),
-                                availablePoints.get(i).y);
+                        Point between = null;
+                        // Diagonal extreme case
+                        if (Math.abs(lastPoint.y - availablePoints.get(i).y) == 2) {
+                            between = new Point(
+                                    Math.abs(availablePoints.get(i).x - 1),
+                                    Math.abs(availablePoints.get(i).y - 1));
+                        }
+                        else if (lastPoint.y == availablePoints.get(i).y) {
+                            // Straight line across case
+                            between = new Point(
+                                    Math.abs(availablePoints.get(i).x - 1),
+                                    availablePoints.get(i).y);
+                        }
 
                         // If point in between is not in pattern, 2 away is not available
-                        if (!pattern.contains(between)) {
+                        if (between != null && !pattern.contains(between)) {
                             availablePoints.remove(i);
                             i--; // keep index same since this is a list
                         }
@@ -77,12 +87,17 @@ public class PatternGenerator
                     // 2 away, up or down
                     else if (Math.abs(lastPoint.y - availablePoints.get(i).y) == 2) {
                         // Get point between last point and point 2 away
-                        Point between = new Point(
-                                availablePoints.get(i).x,
-                                Math.abs(availablePoints.get(i).y - 1));
+                        Point between = null;
+
+                        if (lastPoint.y == availablePoints.get(i).y) {
+                            // Straight line up or down case
+                            between = new Point(
+                                    availablePoints.get(i).x,
+                                    Math.abs(availablePoints.get(i).y - 1));
+                        }
 
                         // If point in between is not in pattern, 2 away is not available
-                        if (!pattern.contains(between)) {
+                        if (between != null && !pattern.contains(between)) {
                             availablePoints.remove(i);
                             i--; // keep index same since this is a list
                         }
