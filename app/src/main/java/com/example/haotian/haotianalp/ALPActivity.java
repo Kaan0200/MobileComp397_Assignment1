@@ -195,12 +195,12 @@ public class ALPActivity extends Activity implements SensorEventListener {
     protected void onResume()
     {
         super.onResume();
-        mSensorManager.registerListener(this, mAccelerometer, mSensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mMagnetometer, mSensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mGyroscope, mSensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mRotation, mSensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mLinearAcc, mSensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mGravity, mSensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mAccelerometer, mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mMagnetometer, mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mGyroscope, mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mRotation, mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mLinearAcc, mSensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mGravity, mSensorManager.SENSOR_DELAY_FASTEST);
 
         updateFromPrefs();
     }
