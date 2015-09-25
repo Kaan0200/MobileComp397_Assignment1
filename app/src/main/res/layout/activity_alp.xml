@@ -29,22 +29,84 @@ You should have received a copy of the GNU General Public License along with
         android:layout_width="fill_parent"
         android:layout_height="0px"
         android:layout_weight="1" />
-    <Button
-        android:id="@+id/generate_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/generate_button_label"
-        android:onClick="click_generatePatternButton" />
 
-
-    <ToggleButton
-        android:id="@+id/practice_toggle"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/generate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/generate_button_label"
+            android:onClick="click_generatePatternButton" />
+
+        <ToggleButton
+            android:id="@+id/practice_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="@string/practice"
+            android:textOff="@string/practice"
+            android:checked="false" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textOn="@string/practice"
-        android:textOff="@string/practice"
-        android:checked="false" />
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pattern1_button_label"
+                android:id="@+id/pattern1_button"
+                android:layout_weight="0.25" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pattern2_button_label"
+                android:id="@+id/pattern2_button"
+                android:singleLine="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pattern3_button_label"
+                android:id="@+id/pattern3_button" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pattern4_button_label"
+                android:id="@+id/pattern4_button" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Correct Attempts:"
+        android:id="@+id/CorrectText" />
 
 
 </LinearLayout>

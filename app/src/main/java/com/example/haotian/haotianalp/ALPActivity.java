@@ -48,6 +48,13 @@ public class ALPActivity extends Activity implements SensorEventListener {
     protected Button mGenerateButton;
     protected Button mDesigner;
     protected ToggleButton mPracticeToggle;
+    protected TextView mSuccessCounterText;
+
+    protected Button mPatternSetButton1;
+    protected Button mPatternSetButton2;
+    protected Button mPatternSetButton3;
+    protected Button mPatternSetButton4;
+
     private List<Point> mEasterEggPattern;
     protected SharedPreferences mPreferences;
     protected int mGridLength=0;
@@ -68,10 +75,12 @@ public class ALPActivity extends Activity implements SensorEventListener {
     public static String[] mLine;
     public BufferedWriter bufferedWriter;
     private VelocityTracker mVelocityTracker = null;
+
     private int control = 0;
     DateFormat mDateFormat;
     String mTimestamp;
     private int counter=0;
+    private int successes = 0;  // Counters!
     private String myStr = "";
 
     // these are lists used to save the touch information
@@ -143,6 +152,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
         setContentView(R.layout.activity_alp);
         mPatternView = (LockPatternView) findViewById(R.id.pattern_view);
+        mSuccessCounterText = (TextView) findViewById(R.id.CorrectText);
 
         // ADJUST GENERATE PATTERN BUTTON
         mGenerateButton = (Button) findViewById(R.id.generate_button);
@@ -154,6 +164,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                         mPatternView.setPattern(mGenerator.getPattern());
                         mPracticeToggle.setEnabled(true);
                         mPatternView.invalidate();
+                        successes = 0;
                     }
                 }
         );
@@ -177,6 +188,74 @@ public class ALPActivity extends Activity implements SensorEventListener {
                             mPatternView.setPracticeMode(true);
                             Log.i("RECORDINGDATA","Toggled to true, recording the data");
                         }
+                    }
+                });
+
+        mPatternSetButton1 = (Button) findViewById(R.id.pattern1_button);
+        mPatternSetButton1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<Point> tempPattern = new ArrayList();
+                        tempPattern.add(new Point(0, 1));
+                        tempPattern.add(new Point(1, 2));
+                        tempPattern.add(new Point(2, 1));
+                        tempPattern.add(new Point(1, 0));
+                        mPatternView.setPattern(tempPattern);
+                        mPracticeToggle.setEnabled(true);
+                        mPatternView.invalidate();
+                        successes = 0;
+                    }
+                });
+        mPatternSetButton2 = (Button) findViewById(R.id.pattern2_button);
+        mPatternSetButton2.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        List<Point> tempPattern = new ArrayList();
+                        tempPattern.add(new Point(0, 0));
+                        tempPattern.add(new Point(1, 0));
+                        tempPattern.add(new Point(2, 0));
+                        tempPattern.add(new Point(1, 1));
+                        tempPattern.add(new Point(0, 2));
+                        mPatternView.setPattern(tempPattern);
+                        mPracticeToggle.setEnabled(true);
+                        mPatternView.invalidate();
+                        successes = 0;
+                    }
+                });
+        mPatternSetButton3 = (Button) findViewById(R.id.pattern3_button);
+        mPatternSetButton3.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<Point> tempPattern = new ArrayList();
+                        tempPattern.add(new Point(0, 1));
+                        tempPattern.add(new Point(1, 1));
+                        tempPattern.add(new Point(2, 1));
+                        tempPattern.add(new Point(2, 0));
+                        tempPattern.add(new Point(1, 0));
+                        tempPattern.add(new Point(0, 0));
+                        mPatternView.setPattern(tempPattern);
+                        mPracticeToggle.setEnabled(true);
+                        mPatternView.invalidate();
+                        successes = 0;
+                    }
+                });
+        mPatternSetButton4 = (Button) findViewById(R.id.pattern4_button);
+        mPatternSetButton4.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<Point> tempPattern = new ArrayList();
+                        tempPattern.add(new Point(1, 0));
+                        tempPattern.add(new Point(1, 1));
+                        tempPattern.add(new Point(0, 2));
+                        tempPattern.add(new Point(0, 1));
+                        mPatternView.setPattern(tempPattern);
+                        mPracticeToggle.setEnabled(true);
+                        mPatternView.invalidate();
+                        successes = 0;
                     }
                 });
 
@@ -640,6 +719,11 @@ public class ALPActivity extends Activity implements SensorEventListener {
             }
         }
         return true;
+    }
+
+    public void successfulAttempt(){
+        successes++;
+        mSuccessCounterText.setText("Correct Attempts: " + successes);
     }
 
     /* Manipulates sensor data based on if the most recent practice pattern was correct */

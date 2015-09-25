@@ -198,6 +198,8 @@ public class LockPatternView extends View
         {
             mode = mPracticeSuccessMode;
             testResult = "true";
+            ALPActivity parent = (ALPActivity) getContext();
+            parent.successfulAttempt();
         }
         else{
             testResult = "false";
