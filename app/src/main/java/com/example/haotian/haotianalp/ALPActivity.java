@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 
+
 public class ALPActivity extends Activity implements SensorEventListener {
     protected LockPatternView mPatternView;
     protected PatternGenerator mGenerator;
@@ -75,7 +76,6 @@ public class ALPActivity extends Activity implements SensorEventListener {
     public static String[] mLine;
     public BufferedWriter bufferedWriter;
     private VelocityTracker mVelocityTracker = null;
-
     private int control = 0;
     DateFormat mDateFormat;
     String mTimestamp;
@@ -142,6 +142,55 @@ public class ALPActivity extends Activity implements SensorEventListener {
     public List<Float> xVelocityList = new ArrayList<>();
     public List<Float> yVelocityList = new ArrayList<>();
 
+    //Assignment two lists for Mean and Deviation
+    public List<Float> xAccelerometer_MEAN = new ArrayList<>();
+    public List<Float> yAccelerometer_MEAN = new ArrayList<>();
+    public List<Float> zAccelerometer_MEAN = new ArrayList<>();
+    public List<Float> xMagnetic_MEAN = new ArrayList<>();
+    public List<Float> yMagnetic_MEAN = new ArrayList<>();
+    public List<Float> zMagnetic_MEAN = new ArrayList<>();
+    public List<Float> xGyroscope_MEAN = new ArrayList<>();
+    public List<Float> yGyroscope_MEAN = new ArrayList<>();
+    public List<Float> zGyroscope_MEAN = new ArrayList<>();
+    public List<Float> xRotation_MEAN = new ArrayList<>();
+    public List<Float> yRotation_MEAN = new ArrayList<>();
+    public List<Float> zRotation_MEAN = new ArrayList<>();
+    public List<Float> xLinAccel_MEAN = new ArrayList<>();
+    public List<Float> yLinAccel_MEAN = new ArrayList<>();
+    public List<Float> zLinAccel_MEAN = new ArrayList<>();
+    public List<Float> xGrav_MEAN = new ArrayList<>();
+    public List<Float> yGrav_MEAN = new ArrayList<>();
+    public List<Float> zGrav_MEAN = new ArrayList<>();
+    public List<Float> pressure_MEAN = new ArrayList<>();
+    public List<Float> size_MEAN = new ArrayList<>();
+    public List<Float> xVelocity_MEAN = new ArrayList<>();
+    public List<Float> yVelocity_MEAN = new ArrayList<>();
+    /////////////////////////////////////////////////////
+    public List<Float> xAccelerometer_STDEV = new ArrayList<>();
+    public List<Float> yAccelerometer_STDEV = new ArrayList<>();
+    public List<Float> zAccelerometer_STDEV = new ArrayList<>();
+    public List<Float> xMagnetic_STDEV = new ArrayList<>();
+    public List<Float> yMagnetic_STDEV = new ArrayList<>();
+    public List<Float> zMagnetic_STDEV = new ArrayList<>();
+    public List<Float> xGyroscope_STDEV = new ArrayList<>();
+    public List<Float> yGyroscope_STDEV = new ArrayList<>();
+    public List<Float> zGyroscope_STDEV = new ArrayList<>();
+    public List<Float> xRotation_STDEV = new ArrayList<>();
+    public List<Float> yRotation_STDEV = new ArrayList<>();
+    public List<Float> zRotation_STDEV = new ArrayList<>();
+    public List<Float> xLinAccel_STDEV = new ArrayList<>();
+    public List<Float> yLinAccel_STDEV = new ArrayList<>();
+    public List<Float> zLinAccel_STDEV = new ArrayList<>();
+    public List<Float> xGrav_STDEV = new ArrayList<>();
+    public List<Float> yGrav_STDEV = new ArrayList<>();
+    public List<Float> zGrav_STDEV = new ArrayList<>();
+    public List<Float> pressure_STDEV = new ArrayList<>();
+    public List<Float> size_STDEV = new ArrayList<>();
+    public List<Float> xVelocity_STDEV = new ArrayList<>();
+    public List<Float> yVelocity_STDEV = new ArrayList<>();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +213,6 @@ public class ALPActivity extends Activity implements SensorEventListener {
                         mPatternView.setPattern(mGenerator.getPattern());
                         mPracticeToggle.setEnabled(true);
                         mPatternView.invalidate();
-                        successes = 0;
                     }
                 }
         );
@@ -179,8 +227,9 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
                         mGenerateButton.setEnabled(!isChecked);
                         if (!isChecked) {
-                            Log.i("SAVEDATA","Toggled back to false, save the data in the lists");
-                            writeDataToCSV();
+                            Log.i("SAVEDATA", "Toggled back to false, save the data in the lists");
+                            //writeDataToCSV();
+                            writeDataToCSV_MeanAndDev();
                             mPatternView.setPracticeMode(false);
                             //TODO:clear data
                         }
@@ -308,43 +357,31 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 xAccelerometerBuffer.add(event.values[0]);
                 yAccelerometerBuffer.add(event.values[1]);
                 zAccelerometerBuffer.add(event.values[2]);
-                Log.i("SENSORDATA","Accelerometer(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] +")");
             }
             if (event.sensor == mMagnetometer){
                 xMagneticBuffer.add(event.values[0]);
                 yMagneticBuffer.add(event.values[1]);
                 zMagneticBuffer.add(event.values[2]);
-                Log.i("SENSORDATA", "Magnetometer(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mGyroscope){
                 yGyroscopeBuffer.add(event.values[0]);
                 xGyroscopeBuffer.add(event.values[1]);
                 zGyroscopeBuffer.add(event.values[2]);
-                Log.i("SENSORDATA", "Gyroscope(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mRotation){
                 yRotationBuffer.add(event.values[0]);
                 zRotationBuffer.add(event.values[1]);
                 xRotationBuffer.add(event.values[2]);
-                Log.i("SENSORDATA", "Rotation(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mLinearAcc){
                 xLinearAccelBuffer.add(event.values[0]);
                 yLinearAccelBuffer.add(event.values[1]);
                 zLinearAccelBuffer.add(event.values[2]);
-                Log.i("SENSORDATA", "LinearAcceleration(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
             if (event.sensor == mGravity){
                 xGravityBuffer.add(event.values[0]);
                 yGravityBuffer.add(event.values[1]);
                 zGravityBuffer.add(event.values[2]);
-                Log.i("SENSORDATA", "Gravity(" +
-                        event.values[0] + ", " + event.values[1] + ", " + event.values[2] + ")");
             }
         }
     }
@@ -367,9 +404,9 @@ public class ALPActivity extends Activity implements SensorEventListener {
     {
         try {
             //create the file
-            String filename = "assignment1datadump.csv";
+            String filename = "MeanStdevDatadump.csv";
             File file = new File(Environment.getExternalStorageDirectory(), filename);
-                file.createNewFile();
+            file.createNewFile();
 
             // Create the writing stream
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
@@ -388,7 +425,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                     "position_X, position_Y, velocity_X, velocity_Y, pressure, size, " +
                     "mCurrentPattern, Counter, \n");
 
-            for(int i = 0; i < xPositionsList.size(); i++){
+            for(int i = 0; i < counterList.size(); i++){
                 if (i > timeStampList.size() - 1) {
                     outputString.append(timeStampList.get(timeStampList.size()-1) + ", ");
                 }else {
@@ -435,7 +472,7 @@ public class ALPActivity extends Activity implements SensorEventListener {
                 }
                 if (i > zGyroscopeList.size() - 1) {
                     outputString.append(zGyroscopeList.get(zGyroscopeList.size()-1) + ", ");
-                 } else {
+                } else {
                     outputString.append(zGyroscopeList.get(i) + ", ");
                 }
                 if (i > xRotationList.size() - 1) {
@@ -538,7 +575,314 @@ public class ALPActivity extends Activity implements SensorEventListener {
             // do the actual writing to file
             Log.i("WRITING", "Writing the data to file");
             bw.write(outputString.toString());
-           // Log.i("CLOSING", "Closing the file that was written at " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + " /" + filename);
+            // Log.i("CLOSING", "Closing the file that was written at " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + " /" + filename);
+            bw.close();
+
+            // scan the new media so the device knows it's there and it can be accessed
+            MediaScannerConnection.scanFile(this,
+                    new String[]{file.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
+        } catch (IOException ex){
+            Log.e("IOEXCEPTION", "There was a problem either finding the file, or writing");
+            Log.e("ERRORMSG",ex.getMessage());
+            Log.e("ERRORSTK",ex.getStackTrace().toString());
+        }
+    }
+
+    private void writeDataToCSV_MeanAndDev()
+    {
+        try {
+            //create the file
+            String filename = "MeanStdevDatadump.csv";
+            File file = new File(Environment.getExternalStorageDirectory(), filename);
+            file.createNewFile();
+
+            // Create the writing stream
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            StringBuilder outputString = new StringBuilder();
+            //loop through all the data we want to write for each column
+            // do the header first
+            outputString.append(
+                    "ACCELEROMETER_X_MEAN, ACCELEROMETER_X_STDEV," +
+                            "ACCELEROMETER_Y_MEAN, ACCELEROMETER_Y_STDEV," +
+                                "ACCELEROMETER_Z_MEAN, ACCELEROMETER_Z_STDEV," +
+                    "MAGNETIC_FIELD_X_MEAN, MAGNETIC_FIELD_X_STDEV, " +
+                            "MAGNETIC_FIELD_Y_MEAN, MAGNETIC_FIELD_Y_STDEV, " +
+                                "MAGNETIC_FIELD_Z_MEAN, MAGNETIC_FIELD_Z_STDEV, " +
+                    "GYROSCOPE_X_MEAN, GYROSCOPE_X_STDEV, " +
+                            "GYROSCOPE_Y_MEAN, GYROSCOPE_Y_STDEV, " +
+                                "GYROSCOPE_Z_MEAN, GYROSCOPE_Z_STDEV, " +
+                    "ROTATION_VECTOR_X_MEAN, ROTATION_VECTOR_X_STDEV, " +
+                            "ROTATION_VECTOR_Y_MEAN, ROTATION_VECTOR_Y_STDEV, " +
+                                "ROTATION_VECTOR_Z_MEAN, ROTATION_VECTOR_Z_STDEV, " +
+                    "LINEAR_ACCELERATION_X_MEAN, LINEAR_ACCELERATION_X_STDEV, " +
+                            "LINEAR_ACCELERATION_Y_MEAN, LINEAR_ACCELERATION_X_STDEV, " +
+                                "LINEAR_ACCELERATION_Z_MEAN, LINEAR_ACCELERATION_X_STDEV, " +
+                    "GRAVITY_X_MEAN, GRAVITY_X_STDEV, " +
+                            "GRAVITY_Y_MEAN, GRAVITY_Y_STDEV, " +
+                                "GRAVITY_Z_MEAN, GRAVITY_Z_STDEV, " +
+                    "velocity_X_MEAN, velocity_X_STDEV, velocity_Y_MEAN, velocity_Y_STDEV, " +
+                            "pressure_MEAN, pressure_STDEV, size_MEAN, size_STDEV, " +
+                    "mCurrentPattern, Counter, \n");
+
+            for(int i = 0; i < successes; i++){
+                // Accelerometers
+                if (i > xAccelerometer_MEAN.size() - 1) {
+                    outputString.append(xAccelerometer_MEAN.get(xAccelerometer_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xAccelerometer_MEAN.get(i) + ", ");
+                }
+                if (i > xAccelerometer_STDEV.size() - 1) {
+                    outputString.append(xAccelerometer_STDEV.get(xAccelerometer_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xAccelerometer_STDEV.get(i) + ", ");
+                }
+                if (i > yAccelerometer_MEAN.size() - 1) {
+                    outputString.append(yAccelerometer_MEAN.get(yAccelerometer_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yAccelerometer_MEAN.get(i) + ", ");
+                }
+                if (i > yAccelerometer_STDEV.size() - 1) {
+                    outputString.append(yAccelerometer_STDEV.get(yAccelerometer_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yAccelerometer_STDEV.get(i) + ", ");
+                }
+                if (i > zAccelerometer_MEAN.size() - 1) {
+                    outputString.append(zAccelerometer_MEAN.get(zAccelerometer_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zAccelerometer_MEAN.get(i) + ", ");
+                }
+                if (i > zAccelerometer_STDEV.size() - 1) {
+                    outputString.append(zAccelerometer_STDEV.get(zAccelerometer_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zAccelerometer_STDEV.get(i) + ", ");
+                }
+                // Magnetic Field
+                if (i > xGrav_MEAN.size() - 1) {
+                    outputString.append(xGrav_MEAN.get(xGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xGrav_MEAN.get(i) + ", ");
+                }
+                if (i > xGrav_STDEV.size() - 1) {
+                    outputString.append(xGrav_STDEV.get(xGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xGrav_STDEV.get(i) + ", ");
+                }
+                if (i > yGrav_MEAN.size() - 1) {
+                    outputString.append(yGrav_MEAN.get(yGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yGrav_MEAN.get(i) + ", ");
+                }
+                if (i > yGrav_STDEV.size() - 1) {
+                    outputString.append(yGrav_STDEV.get(yGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yGrav_STDEV.get(i) + ", ");
+                }
+                if (i > zGrav_MEAN.size() - 1) {
+                    outputString.append(zGrav_MEAN.get(zGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zGrav_MEAN.get(i) + ", ");
+                }
+                if (i > zGrav_STDEV.size() - 1) {
+                    outputString.append(zGrav_STDEV.get(zGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zGrav_STDEV.get(i) + ", ");
+                }
+                // Gyroscope
+                if (i > xGyroscope_MEAN.size() - 1) {
+                    outputString.append(xGyroscope_MEAN.get(xGyroscope_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xGyroscope_MEAN.get(i) + ", ");
+                }
+                if (i > xGyroscope_STDEV.size() - 1) {
+                    outputString.append(xGyroscope_STDEV.get(xGyroscope_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xGyroscope_STDEV.get(i) + ", ");
+                }
+                if (i > yGyroscope_MEAN.size() - 1) {
+                    outputString.append(yGyroscope_MEAN.get(yGyroscope_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yGyroscope_MEAN.get(i) + ", ");
+                }
+                if (i > yGyroscope_STDEV.size() - 1) {
+                    outputString.append(yGyroscope_STDEV.get(yGyroscope_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yGyroscope_STDEV.get(i) + ", ");
+                }
+                if (i > zGyroscope_MEAN.size() - 1) {
+                    outputString.append(zGyroscope_MEAN.get(zGyroscope_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zGyroscope_MEAN.get(i) + ", ");
+                }
+                if (i > zGyroscope_STDEV.size() - 1) {
+                    outputString.append(zGyroscope_STDEV.get(zGyroscope_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zGyroscope_STDEV.get(i) + ", ");
+                }
+                // Rotation
+                if (i > xRotation_MEAN.size() - 1) {
+                    outputString.append(xRotation_MEAN.get(xRotation_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xRotation_MEAN.get(i) + ", ");
+                }
+                if (i > xRotation_STDEV.size() - 1) {
+                    outputString.append(xRotation_STDEV.get(xRotation_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xRotation_STDEV.get(i) + ", ");
+                }
+                if (i > yRotation_MEAN.size() - 1) {
+                    outputString.append(yRotation_MEAN.get(yRotation_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yRotation_MEAN.get(i) + ", ");
+                }
+                if (i > yRotation_STDEV.size() - 1) {
+                    outputString.append(yRotation_STDEV.get(yRotation_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yRotation_STDEV.get(i) + ", ");
+                }
+                if (i > zRotation_MEAN.size() - 1) {
+                    outputString.append(zRotation_MEAN.get(zRotation_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zRotation_MEAN.get(i) + ", ");
+                }
+                if (i > zRotation_STDEV.size() - 1) {
+                    outputString.append(zRotation_STDEV.get(zRotation_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zRotation_STDEV.get(i) + ", ");
+                }
+                // Linear Acceleration
+                if (i > xLinAccel_MEAN.size() - 1) {
+                    outputString.append(xLinAccel_MEAN.get(xLinAccel_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xLinAccel_MEAN.get(i) + ", ");
+                }
+                if (i > xLinAccel_STDEV.size() - 1) {
+                    outputString.append(xLinAccel_STDEV.get(xLinAccel_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xLinAccel_STDEV.get(i) + ", ");
+                }
+                if (i > yLinAccel_MEAN.size() - 1) {
+                    outputString.append(yLinAccel_MEAN.get(yLinAccel_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yLinAccel_MEAN.get(i) + ", ");
+                }
+                if (i > yLinAccel_STDEV.size() - 1) {
+                    outputString.append(yLinAccel_STDEV.get(yLinAccel_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yLinAccel_STDEV.get(i) + ", ");
+                }
+                if (i > zLinAccel_MEAN.size() - 1) {
+                    outputString.append(zLinAccel_MEAN.get(zLinAccel_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zLinAccel_MEAN.get(i) + ", ");
+                }
+                if (i > zLinAccel_STDEV.size() - 1) {
+                    outputString.append(zLinAccel_STDEV.get(zLinAccel_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zLinAccel_STDEV.get(i) + ", ");
+                }
+                // Gravity
+                if (i > xGrav_MEAN.size() - 1) {
+                    outputString.append(xGrav_MEAN.get(xGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xGrav_MEAN.get(i) + ", ");
+                }
+                if (i > xGrav_STDEV.size() - 1) {
+                    outputString.append(xGrav_STDEV.get(xGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xGrav_STDEV.get(i) + ", ");
+                }
+                if (i > yGrav_MEAN.size() - 1) {
+                    outputString.append(yGrav_MEAN.get(yGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yGrav_MEAN.get(i) + ", ");
+                }
+                if (i > yGrav_STDEV.size() - 1) {
+                    outputString.append(yGrav_STDEV.get(yGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yGrav_STDEV.get(i) + ", ");
+                }
+                if (i > zGrav_MEAN.size() - 1) {
+                    outputString.append(zGrav_MEAN.get(zGrav_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(zGrav_MEAN.get(i) + ", ");
+                }
+                if (i > zGrav_STDEV.size() - 1) {
+                    outputString.append(zGrav_STDEV.get(zGrav_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(zGrav_STDEV.get(i) + ", ");
+                }
+                // X Velocity
+                if (i > xVelocity_MEAN.size()-1){
+                    outputString.append(xVelocity_MEAN.get(xVelocity_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(xVelocity_MEAN.get(i) + ", ");
+                }
+                if (i > xVelocity_STDEV.size()-1){
+                    outputString.append(xVelocity_STDEV.get(xVelocity_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(xVelocity_STDEV.get(i) + ", ");
+                }
+                // Y Velocity
+                if (i > yVelocity_MEAN.size()-1){
+                    outputString.append(yVelocity_MEAN.get(yVelocity_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(yVelocity_MEAN.get(i) + ", ");
+                }
+                if (i > yVelocity_STDEV.size()-1){
+                    outputString.append(yVelocity_STDEV.get(yVelocity_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(yVelocity_STDEV.get(i) + ", ");
+                }
+                // Pressure
+                if (i > pressure_MEAN.size()-1){
+                    outputString.append(pressure_MEAN.get(pressure_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(pressure_MEAN.get(i) + ", ");
+                }
+                if (i > pressure_STDEV.size()-1){
+                    outputString.append(pressure_STDEV.get(pressure_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(pressure_STDEV.get(i) + ", ");
+                }
+                // Size
+                if (i > size_MEAN.size()-1) {
+                    outputString.append(size_MEAN.get(size_MEAN.size()-1) + ", ");
+                } else {
+                    outputString.append(size_MEAN.get(i) + ", ");
+                }
+                if (i > size_STDEV.size()-1) {
+                    outputString.append(size_STDEV.get(size_STDEV.size()-1) + ", ");
+                } else {
+                    outputString.append(size_STDEV.get(i) + ", ");
+                }
+
+                // Current pattern string
+                outputString.append(mPatternView.mCurrentPattern.toString().replace(',',' ') + ", ");
+
+                // Counter value
+                if (i > counterList.size()-1) {
+                    outputString.append(counter + ", ");
+                }
+                else {
+                    outputString.append(i + ", ");
+                }
+
+                outputString.append("\n");
+            }
+
+            // do the actual writing to file
+            Log.i("WRITING", "Writing the data to file");
+            bw.write(outputString.toString());
+            // Log.i("CLOSING", "Closing the file that was written at " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + " /" + filename);
             bw.close();
 
             // scan the new media so the device knows it's there and it can be accessed
@@ -627,13 +971,11 @@ public class ALPActivity extends Activity implements SensorEventListener {
         mGenerator.setGridLength(length);
         mPatternView.setGridLength(length);
     }
-    private void setPatternMin(int nodes)
-    {
+    private void setPatternMin(int nodes) {
         mPatternMin = nodes;
         mGenerator.setMinNodes(nodes);
     }
-    private void setPatternMax(int nodes)
-    {
+    private void setPatternMax(int nodes) {
         mPatternMax = nodes;
         mGenerator.setMaxNodes(nodes);
     }
@@ -701,19 +1043,18 @@ public class ALPActivity extends Activity implements SensorEventListener {
                     }
                     mRecordingSensorData = true;
                     recordTouchEventsNoVelocity(event);
-                    Log.i("DOWN", "Touch started at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_MOVE:
                     mVelocityTracker.addMovement(event);
                     mVelocityTracker.computeCurrentVelocity(1000);
                     recordTouchEventsWithVelocity(event);
-                    Log.i("MOVE", "Touch moved at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
                 case MotionEvent.ACTION_UP:
                     mRecordingSensorData = false;
                     recordTouchEventsNoVelocity(event);
                     counter++;
-                    processPracticeResults();
+                    //processPracticeResults();
+                    processPracticeResults_MeanAndDev();
                     Log.i("UP", "Touch lifted at (" + event.getX() + ", " + event.getY() + "), size:" + event.getSize() + ", pressure:" + event.getPressure());
                     break;
             }
@@ -810,5 +1151,123 @@ public class ALPActivity extends Activity implements SensorEventListener {
 
             counterBuffer.clear();
         }
+    }
+
+    private void processPracticeResults_MeanAndDev() {
+        if (mPatternView.testResult == "true") {
+            //Assignment two lists for Mean and Deviation
+            xAccelerometer_MEAN.add((float) calculateMeanOfList(xAccelerometerBuffer));
+            yAccelerometer_MEAN.add((float) calculateMeanOfList(yAccelerometerBuffer));
+            zAccelerometer_MEAN.add((float) calculateMeanOfList(zAccelerometerBuffer));
+            xMagnetic_MEAN.add((float) calculateMeanOfList(xMagneticBuffer));
+            yMagnetic_MEAN.add((float) calculateMeanOfList(yMagneticBuffer));
+            zMagnetic_MEAN.add((float) calculateMeanOfList(zMagneticBuffer));
+            xGyroscope_MEAN.add((float) calculateMeanOfList(xGyroscopeBuffer));
+            yGyroscope_MEAN.add((float) calculateMeanOfList(yGyroscopeBuffer));
+            zGyroscope_MEAN.add((float) calculateMeanOfList(zGyroscopeBuffer));
+            xRotation_MEAN.add((float) calculateMeanOfList(xRotationBuffer));
+            yRotation_MEAN.add((float) calculateMeanOfList(yRotationBuffer));
+            zRotation_MEAN.add((float) calculateMeanOfList(zRotationBuffer));
+            xLinAccel_MEAN.add((float) calculateMeanOfList(xLinearAccelBuffer));
+            yLinAccel_MEAN.add((float) calculateMeanOfList(yLinearAccelBuffer));
+            zLinAccel_MEAN.add((float) calculateMeanOfList(zLinearAccelBuffer));
+            xGrav_MEAN.add((float) calculateMeanOfList(xGravityBuffer));
+            yGrav_MEAN.add((float) calculateMeanOfList(yGravityBuffer));
+            zGrav_MEAN.add((float) calculateMeanOfList(zGravityBuffer));
+            pressure_MEAN.add((float) calculateMeanOfList(pressureBuffer));
+            size_MEAN.add((float) calculateMeanOfList(sizeBuffer));
+            xVelocity_MEAN.add((float) calculateMeanOfList(xVelocityBuffer));
+            yVelocity_MEAN.add((float) calculateMeanOfList(yVelocityBuffer));
+            //////////////////////////////////
+            xAccelerometer_STDEV.add((float) CalculateStandardDeviationOfList(xAccelerometerBuffer));
+            yAccelerometer_STDEV.add((float) CalculateStandardDeviationOfList(yAccelerometerBuffer));
+            zAccelerometer_STDEV.add((float) CalculateStandardDeviationOfList(zAccelerometerBuffer));
+            xMagnetic_STDEV.add((float) CalculateStandardDeviationOfList(xGravityBuffer));
+            yMagnetic_STDEV.add((float) CalculateStandardDeviationOfList(yGravityBuffer));
+            zMagnetic_STDEV.add((float) CalculateStandardDeviationOfList(zGravityBuffer));
+            xGyroscope_STDEV.add((float) CalculateStandardDeviationOfList(xGyroscopeBuffer));
+            yGyroscope_STDEV.add((float) CalculateStandardDeviationOfList(yGyroscopeBuffer));
+            zGyroscope_STDEV.add((float) CalculateStandardDeviationOfList(zGyroscopeBuffer));
+            xRotation_STDEV.add((float) CalculateStandardDeviationOfList(xRotationBuffer));
+            yRotation_STDEV.add((float) CalculateStandardDeviationOfList(yRotationBuffer));
+            zRotation_STDEV.add((float) CalculateStandardDeviationOfList(zRotationBuffer));
+            xLinAccel_STDEV.add((float) CalculateStandardDeviationOfList(xLinearAccelBuffer));
+            yLinAccel_STDEV.add((float) CalculateStandardDeviationOfList(yLinearAccelBuffer));
+            zLinAccel_STDEV.add((float) CalculateStandardDeviationOfList(zLinearAccelBuffer));
+            xGrav_STDEV.add((float) CalculateStandardDeviationOfList(xGravityBuffer));
+            yGrav_STDEV.add((float) CalculateStandardDeviationOfList(yGravityBuffer));
+            zGrav_STDEV.add((float) CalculateStandardDeviationOfList(zGravityBuffer));
+            pressure_STDEV.add((float) CalculateStandardDeviationOfList(pressureBuffer));
+            size_STDEV.add((float) CalculateStandardDeviationOfList(sizeBuffer));
+            xVelocity_STDEV.add((float) CalculateStandardDeviationOfList(xVelocityBuffer));
+            yVelocity_STDEV.add((float) CalculateStandardDeviationOfList(yVelocityBuffer));
+        }
+        else {
+            Log.i("RESULT-FAIL", "Practice pattern was INCORRECT, emptying cached data");
+            // Clear touch sensor data cache
+            xPositionsBuffer.clear();
+            yPositionsBuffer.clear();
+
+            xVelocityBuffer.clear();
+            yVelocityBuffer.clear();
+
+            pressureBuffer.clear();
+            sizeBuffer.clear();
+
+            // Save other sensor cache
+            timeStampBuffer.clear();
+
+            xAccelerometerBuffer.clear();
+            yAccelerometerBuffer.clear();
+            zAccelerometerBuffer.clear();
+
+            xMagneticBuffer.clear();
+            yMagneticBuffer.clear();
+            zMagneticBuffer.clear();
+
+            xGyroscopeBuffer.clear();
+            yGyroscopeBuffer.clear();
+            zGyroscopeBuffer.clear();
+
+            xRotationBuffer.clear();
+            yRotationBuffer.clear();
+            zRotationBuffer.clear();
+
+            xLinearAccelBuffer.clear();
+            yLinearAccelBuffer.clear();
+            zLinearAccelBuffer.clear();
+
+            xGravityBuffer.clear();
+            yGravityBuffer.clear();
+            zGravityBuffer.clear();
+
+            counterBuffer.clear();
+
+        }
+    }
+
+    // this is a super dirty list, no validation
+    static private float calculateMeanOfList(List<Float> list) {
+
+        // Calculate the summation of the elements in the list
+        float sum = 0;
+        int n = list.size();
+
+        for (int i = 0; i < list.size(); i++) {
+            sum = sum + list.get(i);
+        }
+
+        return (sum / n);
+    }
+
+    static private double CalculateStandardDeviationOfList(List<Float> list) {
+
+        double sum = 0;
+        float mean = calculateMeanOfList(list);
+
+        for (Float i : list) {
+            sum +=  Math.pow((i - mean), 2);
+        }
+        return Math.sqrt( sum / ( list.size() - 1 ) ); // sample
     }
 }
